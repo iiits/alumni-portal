@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/Footer";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -17,9 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} antialiased mx-auto`}>
+      <body className={`${outfit.className} antialiased mx-auto min-h-screen flex flex-col`}>
         <Navbar />
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

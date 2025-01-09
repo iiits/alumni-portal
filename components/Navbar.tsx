@@ -105,13 +105,9 @@ export function Navbar() {
                 <div className="border-t pt-4">
                   <div className="flex flex-col gap-2 text-lg">
                     {loginSignup.map((item) => (
-                      <Button
-                        key={item.href}
-                        href={item.href}
-                        variant={item.variant}
-                      >
-                        {item.text}
-                      </Button>
+                      <Link key={item.href} href={item.href} passHref>
+                        <Button variant={item.variant}>{item.text}</Button>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -159,9 +155,9 @@ export function Navbar() {
         {/* Desktop - Auth Buttons */}
         <div className="hidden items-center gap-2 sm:flex">
           {loginSignup.map((item) => (
-            <Button key={item.href} href={item.href} variant={item.variant}>
-              {item.text}
-            </Button>
+            <Link key={item.href} href={item.href} passHref>
+              <Button variant={item.variant}>{item.text}</Button>
+            </Link>
           ))}
         </div>
       </div>

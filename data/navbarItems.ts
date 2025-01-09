@@ -12,7 +12,7 @@ export interface NavbarItem {
 export const loginSignup = [
   {
     text: "Login",
-    href: "/login",
+    href: "/",
     variant: "ghost",
   },
   {

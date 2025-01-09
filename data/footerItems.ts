@@ -27,82 +27,82 @@ export const footerItems: FooterData = {
     {
       icon: "Globe",
       href: "https://www.iiits.ac.in",
-      label: "Website"
+      label: "Website",
     },
     {
       icon: "Twitter",
       href: "https://twitter.com/IIITSC",
-      label: "Twitter"
+      label: "Twitter",
     },
     {
       icon: "Linkedin",
       href: "https://www.linkedin.com/school/indian-institute-of-information-technology-sricity/",
-      label: "LinkedIn"
+      label: "LinkedIn",
     },
     {
       icon: "Facebook",
       href: "https://www.facebook.com/IIIT.SriCity/",
-      label: "Facebook"
+      label: "Facebook",
     },
     {
       icon: "Instagram",
       href: "https://www.instagram.com/iiitsricity/?hl=en",
-      label: "Instagram"
+      label: "Instagram",
     },
     {
       icon: "Youtube",
       href: "https://www.youtube.com/channel/UCfDNjbRE6KRLShDHTLBO_UQ",
-      label: "YouTube"
+      label: "YouTube",
     },
     {
-        icon: "Github",
-        href: "https://github.com/iiits/alumni-portal",
-        label: "GitHub"
-      }
+      icon: "Github",
+      href: "https://github.com/iiits/alumni-portal",
+      label: "GitHub",
+    },
   ],
   quickLinks: [
     {
       title: "Home",
-      href: "/"
+      href: "/",
     },
     {
       title: "About",
-      href: "/about"
+      href: "/about",
     },
     {
       title: "Services",
-      href: "/services"
+      href: "/services",
     },
     {
       title: "Contact",
-      href: "/contact"
-    }
+      href: "/contact",
+    },
   ],
   resources: [
     {
       title: "Documentation",
-      href: "/docs"
+      href: "/docs",
     },
     {
       title: "Tutorials",
-      href: "/tutorials"
+      href: "/tutorials",
     },
     {
       title: "Support",
-      href: "/support"
+      href: "/support",
     },
     {
       title: "FAQs",
-      href: "/faqs"
-    }
+      href: "/faqs",
+    },
   ],
   contact: {
     address: [
       "Indian Institute of Information Technology,",
       "Sri City, Chittoor District",
-      "Andhra Pradesh - 517646"
+      "Andhra Pradesh - 517646",
     ],
     phone: "+91-7032851919",
-    email: "contact@iiits.in"
-  }
-}
+    email: "contact@iiits.in",
+  },
+};

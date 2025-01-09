@@ -45,8 +45,8 @@ ListItem.displayName = "ListItem";
 
 export function Navbar() {
   return (
-    <div className="w-full border-b">
-      <div className="relative z-100 container mx-auto flex h-16 items-center justify-between max-w-[90vw]">
+    <div className="w-full border-b relative z-10000">
+      <div className="container mx-auto flex h-16 items-center justify-between max-w-[90vw]">
         {/* Left - Brand */}
         <div className="text-xl font-bold">IIITS</div>
 

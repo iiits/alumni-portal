@@ -20,11 +20,13 @@ import Link from "next/link";
 import * as React from "react";
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
+  React.ElementRef<typeof Link>,
+  React.ComponentPropsWithoutRef<typeof Link> & { title: string }
 >(({ className, title, children, ...props }, ref) => {
   return (
     <li>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <NavigationMenuLink asChild>
         <Link
           ref={ref}

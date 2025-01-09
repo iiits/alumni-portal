@@ -2,22 +2,29 @@ export interface NavbarItem {
   id: string;
   title: string;
   route?: string;
-  dropdownItems?: {
+  dropdownItems?: Array<{
     title: string;
     href: string;
     description: string;
-  };
+  }>;
 }
 
-export const loginSignup = [
+interface LoginSignupItem {
+  href: string;
+  text: string;
+  variant: "default" | "outline" | "ghost";
+}
+
+export const loginSignup: LoginSignupItem[] = [
   {
+    href: "/login",
     text: "Login",
-    href: "/",
-    variant: "ghost",
+    variant: "outline",
   },
   {
-    text: "Get Started",
     href: "/signup",
+    text: "Sign Up",
+    variant: "default",
   },
 ];
 

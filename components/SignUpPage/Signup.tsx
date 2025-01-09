@@ -1,14 +1,11 @@
 "use client";
-import React from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { cn } from "@/lib/utils";
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-} from "@tabler/icons-react";
 
-export function SignupFormDemo() {
+import { cn } from "@/lib/utils";
+import React from "react";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+
+export function SignupForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
@@ -43,12 +40,12 @@ export function SignupFormDemo() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="rollNumber">Student ID</Label>
-          <Input 
-            id="rollNumber" 
-            placeholder="S20XX00X0XXX" 
-            type="text" 
-            pattern="^S\d{11}$" 
-            required 
+          <Input
+            id="rollNumber"
+            placeholder="S20XX00X0XXX"
+            type="text"
+            pattern="^S\d{11}$"
+            required
           />
         </LabelInputContainer>
 

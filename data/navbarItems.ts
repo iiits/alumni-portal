@@ -9,11 +9,23 @@ export interface NavbarItem {
   };
 }
 
+export const loginSignup = [
+  {
+    text: "Login",
+    href: "/login",
+    variant: "ghost",
+  },
+  {
+    text: "Get Started",
+    href: "/signup",
+  },
+];
+
 export const navbarItems: NavbarItem[] = [
   {
     id: "home",
     title: "Home",
-    route: "#home",
+    route: "/",
   },
   {
     id: "features",

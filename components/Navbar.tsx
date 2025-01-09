@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -11,7 +13,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { navbarItems } from "@/data/navbarItems";
+import { loginSignup, navbarItems } from "@/data/navbarItems";
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import Link from "next/link";
@@ -32,7 +34,7 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="text-base font-medium leading-none">{title}</div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
@@ -44,16 +46,18 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem";
 
 export function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="w-full border-b relative z-[100000000000000000]">
+    <div className="w-full border-b relative z-[9999]">
       <div className="container mx-auto flex h-16 items-center justify-between max-w-[90vw]">
         {/* Left - Brand */}
         <div className="text-xl font-bold">IIITS</div>
 
         {/* Mobile Menu Button */}
         <div className="sm:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild className={cn(isOpen && "hidden")}>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
               </Button>
@@ -99,9 +103,16 @@ export function Navbar() {
 
                 {/* Sheet Footer */}
                 <div className="border-t pt-4">
-                  <div className="flex flex-col gap-2">
-                    <Button variant="ghost">Login</Button>
-                    <Button>Get Started</Button>
+                  <div className="flex flex-col gap-2 text-lg">
+                    {loginSignup.map((item) => (
+                      <Button
+                        key={item.href}
+                        href={item.href}
+                        variant={item.variant}
+                      >
+                        {item.text}
+                      </Button>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -146,9 +157,12 @@ export function Navbar() {
         </NavigationMenu>
 
         {/* Desktop - Auth Buttons */}
-        <div className="hidden items-center gap-4 sm:flex">
-          <Button variant="ghost">Login</Button>
-          <Button>Get Started</Button>
+        <div className="hidden items-center gap-2 sm:flex">
+          {loginSignup.map((item) => (
+            <Button key={item.href} href={item.href} variant={item.variant}>
+              {item.text}
+            </Button>
+          ))}
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion } from "motion/react";
 import DottedMap from "dotted-map";
-import Image from "next/image";
+import { motion } from "motion/react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
+import { useRef } from "react";
 
 interface MapProps {
   dots?: Array<{
@@ -30,9 +30,13 @@ export function WorldMap({
     backgroundColor: theme === "dark" ? "black" : "white",
   });
 
-  const projectPoint = (lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
+    const projectPoint = (lat: number, lng: number) => {
+    const normalizedLng = ((lng + 180) % 360 + 360) % 360 - 180;
+    const normalizedLat = Math.max(-90, Math.min(90, lat));
+
+    const x = (normalizedLng + 180) * (800 / 360);
+    const y = (90 - normalizedLat) * (400 / 180) + 30;
+
     return { x, y };
   };
 

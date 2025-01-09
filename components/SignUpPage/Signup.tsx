@@ -1,17 +1,24 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useRef } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 export function SignupForm() {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+    console.log("Form Data:", data);
+
+    formRef.current?.reset();
   };
+
   return (
-    <div className="mt-16 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="mt-8 mb-8 max-w-3xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to IIITS Alumni Portal
       </h2>
@@ -19,29 +26,55 @@ export function SignupForm() {
         Login to connect and interact with current students
       </p>
 
-      <form className="my-8" onSubmit={handleSubmit}>
+      <form className="my-8" onSubmit={handleSubmit} ref={formRef}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
-            <Input id="firstname" placeholder="Tyler" type="text"  required/>
+            <Input
+              id="firstname"
+              name="firstname"
+              placeholder="John"
+              type="text"
+              required
+            />
           </LabelInputContainer>
           <LabelInputContainer>
             <Label htmlFor="lastname">Last name</Label>
-            <Input id="lastname" placeholder="Durden" type="text"  required/>
+            <Input
+              id="lastname"
+              name="lastname"
+              placeholder="Doe"
+              type="text"
+              required
+            />
           </LabelInputContainer>
         </div>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">College Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email"  required/>
+          <Input
+            id="collegeEmail"
+            name="collegeEmail"
+            placeholder="john.d22@iiits.in"
+            pattern="^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@iiits\.in$"
+            type="email"
+            required
+          />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Personal Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email"  required/>
+          <Input
+            id="personalEmail"
+            name="personalEmail"
+            placeholder="johndoe@gmail.com"
+            type="email"
+            required
+          />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="rollNumber">Student ID</Label>
           <Input
             id="rollNumber"
+            name="rollNumber"
             placeholder="S20XX00X0XXX"
             type="text"
             pattern="^S\d{11}$"
@@ -51,7 +84,13 @@ export function SignupForm() {
 
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password"  required/>
+          <Input
+            id="password"
+            name="password"
+            placeholder="•••••••••••"
+            type="password"
+            required
+          />
         </LabelInputContainer>
 
         <button

@@ -44,9 +44,9 @@ export const AnimatedTestimonials = ({
     return index % 2 === 0 ? baseRotation : -baseRotation;
   };
   return (
-    <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto antialiased px-6 md:px-8 lg:px-10 py-20">
+    <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto antialiased px-6 md:px-8 lg:px-10 py-10 lg:py-20">
       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
-        <div className="flex flex-col justify-around xl:gap-6">
+        <div className="flex flex-col justify-around lg:gap-6">
           <div>
             <div className="relative h-52 md:h-80 w-full">
               <AnimatePresence>

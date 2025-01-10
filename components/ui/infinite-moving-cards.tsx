@@ -24,7 +24,7 @@ export const InfiniteMovingCards = ({
   useEffect(() => {
     addAnimation();
   }, []);
-  
+
   const [start, setStart] = useState(false);
 
   function addAnimation() {
@@ -76,7 +76,7 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20  max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-5xl xl:max-w-7xl overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20  max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[90rem] 3xl:max-w-[115rem] 4xl:max-w-[130rem] overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}
     >

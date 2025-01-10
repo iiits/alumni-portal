@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
 const svgToDataUri = require("mini-svg-data-uri");
-const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 
@@ -10,10 +12,14 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{ts,tsx}"
+    "./src/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
+      screens: {
+        "3xl": "1920px",
+        "4xl": "2160px",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

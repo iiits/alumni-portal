@@ -18,12 +18,12 @@ export function HeroHighlightDemo() {
           duration: 0.5,
           ease: [0.4, 0.0, 0.2, 1],
         }}
-        className="text-4xl px-4 md:text-4xl lg:text-6xl font-bold text-neutral-700 dark:text-white max-w-6xl leading-relaxed lg:leading-snug text-center mx-auto "
+        className="text-4xl px-4 md:text-4xl lg:text-6xl font-bold text-neutral-700 dark:text-white max-w-6xl leading-relaxed lg:leading-snug text-center mx-auto"
       >
-        Once a part of us, always a part of us.
-        <div>
+        Indian Institute Of Information Technology, Sri City
+        <div className="flex flex-col items-center mt-6">
           <Highlight className="text-black dark:text-white">
-            Welcome home, alumni.
+            Welcomes alumni.
           </Highlight>
         </div>
       </motion.h1>

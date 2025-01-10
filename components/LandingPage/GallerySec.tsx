@@ -4,7 +4,10 @@ import { LayoutGrid } from "../ui/layout-grid";
 
 export function LayoutGridDemo() {
   return (
-    <div className="h-screen py-20 w-full">
+    <div className="h-screen flex flex-col items-center gap-4 lg:gap-6 py-20 w-full">
+      <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center">
+        Through the Lens of IIITS
+      </span>
       <LayoutGrid cards={cards} />
     </div>
   );
@@ -69,28 +72,24 @@ const cards = [
     id: 1,
     content: <SkeletonOne />,
     className: "md:col-span-2",
-    thumbnail:
-      "/gallery3.jpeg",
+    thumbnail: "/gallery3.jpeg",
   },
   {
     id: 2,
     content: <SkeletonTwo />,
     className: "col-span-1",
-    thumbnail:
-      "/gallery1.jpeg",
+    thumbnail: "/gallery1.jpeg",
   },
   {
     id: 3,
     content: <SkeletonThree />,
     className: "col-span-1",
-    thumbnail:
-      "/gallery2.jpeg",
+    thumbnail: "/gallery2.jpeg",
   },
   {
     id: 4,
     content: <SkeletonFour />,
     className: "md:col-span-2",
-    thumbnail:
-      "/gallery4.jpeg",
+    thumbnail: "/gallery4.jpeg",
   },
 ];

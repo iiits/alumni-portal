@@ -103,6 +103,6 @@ export const footerItems: FooterData = {
       "Andhra Pradesh - 517646",
     ],
     phone: "+91-7032851919",
-    email: "contact@iiits.in",
+    email: "alumni.office@iiits.in",
   },
 };

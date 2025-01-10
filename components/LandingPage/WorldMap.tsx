@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 
 export function WorldMapDemo() {
   return (
-    <div className=" py-40 dark:bg-black bg-white w-full">
+    <div className=" pt-20 pb-40 dark:bg-black bg-white w-full">
       <div className="max-w-7xl mx-auto text-center">
         <p className="font-bold text-xl md:text-4xl dark:text-white text-black">
           Stay{" "}
@@ -65,7 +65,7 @@ export function WorldMapDemo() {
           },
           {
             start: { lat: 13.0827, lng: 80.2707 }, // Chennai
-            end: { lat: 55.7700, lng: 37.5831 }, // Moscow
+            end: { lat: 55.77, lng: 37.5831 }, // Moscow
           },
         ]}
       />

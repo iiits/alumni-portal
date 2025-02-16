@@ -3,15 +3,14 @@ import axios from "axios";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { token } = body;
+    const { token } = await req.json();
 
     if (!token) {
       return NextResponse.json({ message: "Token is required" }, { status: 400 });
     }
 
-    // Call the backend API
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/verifyemail`, { token });
+    // Call backend API
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`, { token });
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {

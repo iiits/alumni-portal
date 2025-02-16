@@ -30,12 +30,12 @@ export function SignupForm() {
         department: data.department,
         collegeEmail: data.collegeEmail,
         personalEmail: data.personalEmail,
-        rollNumber: data.rollNumber,
+        userId: data.rollNumber,
         password: data.password,
       });
 
       if (response.status === 201) {
-        router.push("/dashboard");
+        router.push("/emailverificationalert");
       }
     } catch (error: any) {
       console.error("Signup failed:", error);
@@ -80,9 +80,9 @@ export function SignupForm() {
                 <SelectValue placeholder="Select Department" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="aids">AIDS</SelectItem>
-                <SelectItem value="cse">CSE</SelectItem>
-                <SelectItem value="ece">ECE</SelectItem>
+                <SelectItem value="AIDS">AIDS</SelectItem>
+                <SelectItem value="CSE">CSE</SelectItem>
+                <SelectItem value="ECE">ECE</SelectItem>
               </SelectContent>
             </Select>
           </LabelInputContainer>

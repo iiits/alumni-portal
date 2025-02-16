@@ -28,7 +28,8 @@ export default function LoginForm() {
       });
 
       if (response.status === 200) {
-        router.push("/dashboard");
+        localStorage.setItem("token", response.data.token);
+        router.replace("/");
       }
     } catch (error: any) {
       console.error("Login failed:", error);

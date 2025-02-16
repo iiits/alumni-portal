@@ -1,28 +1,49 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
+import { axiosInstance } from "@/lib/api/axios";
 
 export function SignupForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
-    console.log("Form Data:", data);
 
-    formRef.current?.reset();
+    try {
+      const response = await axiosInstance.post("/auth/signup", {
+        name: data.name,
+        username: data.username,
+        batch: data.batch,
+        department: data.department,
+        collegeEmail: data.collegeEmail,
+        personalEmail: data.personalEmail,
+        rollNumber: data.rollNumber,
+        password: data.password,
+      });
+
+      if (response.status === 201) {
+        router.push("/dashboard");
+      }
+    } catch (error: any) {
+      console.error("Signup failed:", error);
+      setErrorMessage(error.response?.data?.message || "Signup failed.");
+    } finally {
+      setLoading(false);
+      formRef.current?.reset();
+    }
   };
 
   return (
@@ -31,53 +52,32 @@ export function SignupForm() {
         Welcome to IIITS Alumni Portal
       </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Login to connect and interact with current students
+        Sign up to connect and interact with current students
       </p>
 
       <form className="my-8" onSubmit={handleSubmit} ref={formRef}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              placeholder="Sam"
-              type="text"
-              required
-            />
+            <Input id="name" name="name" placeholder="Sam" type="text" required />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="userid">User Name</Label>
-            <Input
-              id="username"
-              name="username"
-              placeholder="sam121"
-              type="text"
-              required
-            />
+            <Label htmlFor="username">User Name</Label>
+            <Input id="username" name="username" placeholder="sam121" type="text" required />
           </LabelInputContainer>
         </div>
+
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label htmlFor="batch">Batch (Year)</Label>
-            <Input 
-              id="batch" 
-              name="batch" 
-              type="number" 
-              placeholder="2022" 
-              min="2017" 
-              max={new Date().getFullYear()} 
-              required 
-            />
+            <Input id="batch" name="batch" type="number" placeholder="2022" min="2017" max={new Date().getFullYear()} required />
           </LabelInputContainer>
 
           <LabelInputContainer>
             <Label htmlFor="department">Department</Label>
-            <Select>
-              <SelectTrigger className="w-full h-[42px] px-3 py-2 rounded-md border bg-gray-50 dark:bg-zinc-800 text-neutral-400 dark:text-white shadow-input focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600">
-                <SelectValue 
-                  placeholder="Select Department"
-                />
+            <Select name="department">
+              <SelectTrigger>
+                <SelectValue placeholder="Select Department" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="aids">AIDS</SelectItem>
@@ -86,61 +86,31 @@ export function SignupForm() {
               </SelectContent>
             </Select>
           </LabelInputContainer>
-
-
-
-
-
         </div>
+
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">College Email Address</Label>
-          <Input
-            id="collegeEmail"
-            name="collegeEmail"
-            placeholder="john.d22@iiits.in"
-            pattern="^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@iiits\.in$"
-            type="email"
-            required
-          />
+          <Label htmlFor="collegeEmail">College Email Address</Label>
+          <Input id="collegeEmail" name="collegeEmail" placeholder="john.d22@iiits.in" pattern="^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@iiits\.in$" type="email" required />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Personal Email Address</Label>
-          <Input
-            id="personalEmail"
-            name="personalEmail"
-            placeholder="johndoe@gmail.com"
-            type="email"
-            required
-          />
+          <Label htmlFor="personalEmail">Personal Email Address</Label>
+          <Input id="personalEmail" name="personalEmail" placeholder="johndoe@gmail.com" type="email" required />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="rollNumber">Student ID</Label>
-          <Input
-            id="rollNumber"
-            name="rollNumber"
-            placeholder="S20XX00X0XXX"
-            type="text"
-            pattern="^S\d{11}$"
-            required
-          />
+          <Input id="rollNumber" name="rollNumber" placeholder="S20XX00X0XXX" type="text" pattern="^S\d{11}$" required />
         </LabelInputContainer>
 
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            name="password"
-            placeholder="•••••••••••"
-            type="password"
-            required
-          />
+          <Input id="password" name="password" placeholder="•••••••••••" type="password" required />
         </LabelInputContainer>
 
-        <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-          type="submit"
-        >
-          Sign up &rarr;
+        {/* Error Message */}
+        {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+
+        <button className="bg-gradient-to-br from-black dark:from-zinc-900 to-neutral-600 w-full text-white rounded-md h-10 font-medium" type="submit" disabled={loading}>
+          {loading ? "Signing up..." : "Sign up"} &rarr;
           <BottomGradient />
         </button>
 
@@ -150,25 +120,13 @@ export function SignupForm() {
   );
 }
 
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
+const BottomGradient = () => (
+  <>
+    <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+    <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+  </>
+);
 
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};
+const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>
+);

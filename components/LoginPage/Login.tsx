@@ -4,24 +4,39 @@ import { cn } from "@/lib/utils";
 import React, { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { useRouter } from "next/navigation";
+import { axiosInstance } from "@/lib/api/axios";
 
 export default function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-
-  // Function to determine input type
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
+    
+    try {
+      const response = await axiosInstance.post("/auth/login", {
+        identifier: data.identifier,
+        password: data.password,
+      });
 
-    console.log("Form Data:", data);
-
-    formRef.current?.reset();
+      if (response.status === 200) {
+        router.push("/dashboard");
+      }
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      setErrorMessage(error.response?.data?.message || "Invalid credentials.");
+    } finally {
+      setLoading(false);
+      formRef.current?.reset();
+    }
   };
 
   return (
@@ -43,7 +58,6 @@ export default function LoginForm() {
             placeholder="Enter your college email or personal email or Student ID"
             type="text"
             required
-            onChange={handleInputChange}
           />
         </LabelInputContainer>
 
@@ -59,12 +73,18 @@ export default function LoginForm() {
           />
         </LabelInputContainer>
 
+        {/* Error Message */}
+        {errorMessage && (
+          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+        )}
+
         {/* Submit Button */}
         <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
           type="submit"
+          disabled={loading}
         >
-          Login &rarr;
+          {loading ? "Logging in..." : "Login"} &rarr;
           <BottomGradient />
         </button>
 

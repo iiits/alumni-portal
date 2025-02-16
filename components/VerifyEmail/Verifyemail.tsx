@@ -22,7 +22,7 @@ export default function VerifyEmail() {
       }
 
       try {
-        const response = await axiosInstance.post("/api/auth/verify-email", { token });
+        const response = await axiosInstance.post("/auth/verifyemail", { token });
 
         if (response.status === 200) {
           setStatus("success");

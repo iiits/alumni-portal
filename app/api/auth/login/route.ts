@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     // Call the backend API
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, { 
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, { 
       identifier, 
       password 
     });

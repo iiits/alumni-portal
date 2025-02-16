@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     }
 
     // Call backend API
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`, { token });
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-email`, { token });
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {

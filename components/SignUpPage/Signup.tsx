@@ -4,6 +4,14 @@ import { cn } from "@/lib/utils";
 import React, { useRef } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 
 export function SignupForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -29,25 +37,60 @@ export function SignupForm() {
       <form className="my-8" onSubmit={handleSubmit} ref={formRef}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="firstname">First name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
-              id="firstname"
-              name="firstname"
-              placeholder="John"
+              id="name"
+              name="name"
+              placeholder="Sam"
               type="text"
               required
             />
           </LabelInputContainer>
           <LabelInputContainer>
-            <Label htmlFor="lastname">Last name</Label>
+            <Label htmlFor="userid">User Name</Label>
             <Input
-              id="lastname"
-              name="lastname"
-              placeholder="Doe"
+              id="username"
+              name="username"
+              placeholder="sam121"
               type="text"
               required
             />
           </LabelInputContainer>
+        </div>
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label htmlFor="batch">Batch (Year)</Label>
+            <Input 
+              id="batch" 
+              name="batch" 
+              type="number" 
+              placeholder="2022" 
+              min="2017" 
+              max={new Date().getFullYear()} 
+              required 
+            />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <Label htmlFor="department">Department</Label>
+            <Select>
+              <SelectTrigger className="w-full h-[42px] px-3 py-2 rounded-md border bg-gray-50 dark:bg-zinc-800 text-neutral-400 dark:text-white shadow-input focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600">
+                <SelectValue 
+                  placeholder="Select Department"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="aids">AIDS</SelectItem>
+                <SelectItem value="cse">CSE</SelectItem>
+                <SelectItem value="ece">ECE</SelectItem>
+              </SelectContent>
+            </Select>
+          </LabelInputContainer>
+
+
+
+
+
         </div>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">College Email Address</Label>

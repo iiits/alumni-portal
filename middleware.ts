@@ -8,11 +8,14 @@ export async function middleware(request: NextRequest) {
     "/",
     "/login",
     "/signup",
+    "/faq",
+    "/contactus",
     "/verifyemail",
     "/emailverificationalert",
     "/api/auth/verifyemail",
     "/api/auth/login",
     "/api/auth/signup",
+    "/api/contactus",
   ];
 
   if (unProtectedRoutes.includes(pathname)) {

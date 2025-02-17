@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     const data = await response.json();

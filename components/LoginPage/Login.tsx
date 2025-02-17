@@ -87,7 +87,9 @@ export default function LoginForm() {
         </LabelInputContainer>
 
         {/* Error Message */}
-        {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+        )}
 
         {/* Submit Button */}
         <button
@@ -121,5 +123,9 @@ const LabelInputContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
 };

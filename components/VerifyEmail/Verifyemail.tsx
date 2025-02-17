@@ -9,7 +9,9 @@ export default function VerifyEmail() {
   const router = useRouter();
   const token = searchParams.get("token");
 
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
   const [errorMessage, setErrorMessage] = useState("");
   const [resending, setResending] = useState(false);
 
@@ -22,7 +24,9 @@ export default function VerifyEmail() {
       }
 
       try {
-        const response = await axiosInstance.post("/auth/verifyemail", { token });
+        const response = await axiosInstance.post("/auth/verifyemail", {
+          token,
+        });
 
         if (response.status === 200) {
           setStatus("success");
@@ -34,7 +38,9 @@ export default function VerifyEmail() {
       } catch (error: any) {
         console.error("Verification failed:", error);
         setStatus("error");
-        setErrorMessage(error.response?.data?.message || "Something went wrong.");
+        setErrorMessage(
+          error.response?.data?.message || "Something went wrong.",
+        );
       }
     };
 
@@ -44,7 +50,9 @@ export default function VerifyEmail() {
   const handleResend = async () => {
     setResending(true);
     try {
-      const response = await axiosInstance.post("/api/auth/resend-verification");
+      const response = await axiosInstance.post(
+        "/api/auth/resend-verification",
+      );
       if (response.status === 200) {
         alert("Verification email resent! Check your inbox.");
       } else {
@@ -64,16 +72,16 @@ export default function VerifyEmail() {
         {status === "loading"
           ? "Verifying your email..."
           : status === "success"
-          ? "Email verified successfully!"
-          : "Verification failed"}
+            ? "Email verified successfully!"
+            : "Verification failed"}
       </h2>
 
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
         {status === "loading"
           ? "Please wait while we verify your email."
           : status === "success"
-          ? "You will be redirected shortly."
-          : errorMessage}
+            ? "You will be redirected shortly."
+            : errorMessage}
       </p>
 
       {status === "error" && (

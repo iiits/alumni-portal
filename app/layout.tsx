@@ -18,11 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} antialiased mx-auto min-h-screen flex flex-col`}>
+      <body
+        className={`${outfit.className} antialiased mx-auto min-h-screen flex flex-col`}
+      >
         <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>

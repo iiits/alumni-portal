@@ -4,6 +4,11 @@ import { NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Bypass all static files from the middleware
+  if (pathname.match(/\.(svg|png|jpg|jpeg|gif|ico|json)$/)) {
+    return NextResponse.next();
+  }
+
   const unProtectedRoutes = [
     "/",
     "/login",
@@ -32,7 +37,7 @@ export async function middleware(request: NextRequest) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     const data = await response.json();

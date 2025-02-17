@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 function emailVerificationAlert() {
   return (
@@ -6,7 +6,7 @@ function emailVerificationAlert() {
       <h1>Please Verify Your Email</h1>
       <p>we have sent an email to your college mailId</p>
     </div>
-  )
+  );
 }
 
-export default emailVerificationAlert
+export default emailVerificationAlert;

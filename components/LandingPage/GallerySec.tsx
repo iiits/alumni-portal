@@ -20,9 +20,7 @@ const SkeletonOne = () => {
         ISRO Rocket Launch
       </p>
       <p className="font-normal text-base text-white"></p>
-      <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-        
-      </p>
+      <p className="font-normal text-base my-4 max-w-lg text-neutral-200"></p>
     </div>
   );
 };
@@ -34,9 +32,7 @@ const SkeletonTwo = () => {
         Ganesh Chaturthi
       </p>
       <p className="font-normal text-base text-white"></p>
-      <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-        
-      </p>
+      <p className="font-normal text-base my-4 max-w-lg text-neutral-200"></p>
     </div>
   );
 };
@@ -47,9 +43,7 @@ const SkeletonThree = () => {
         Induction Program
       </p>
       <p className="font-normal text-base text-white"></p>
-      <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-        
-      </p>
+      <p className="font-normal text-base my-4 max-w-lg text-neutral-200"></p>
     </div>
   );
 };
@@ -60,9 +54,7 @@ const SkeletonFour = () => {
         Sankranthi Fun Activities
       </p>
       <p className="font-normal text-base text-white"></p>
-      <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-        
-      </p>
+      <p className="font-normal text-base my-4 max-w-lg text-neutral-200"></p>
     </div>
   );
 };

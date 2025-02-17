@@ -1,12 +1,12 @@
 "use client";
 
+import { axiosInstance } from "@/lib/api/axios";
+import { useUserStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useRouter } from "next/navigation";
-import { axiosInstance } from "@/lib/api/axios";
-import { useUserStore } from "@/lib/store";
 
 export default function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -33,6 +33,9 @@ export default function LoginForm() {
 
       if (response.status === 200) {
         const { token, user } = response.data.data;
+
+        // Set Cookies
+        document.cookie = `token=${token}; path=/; max-age=2592000`; // 30 days
 
         // Store user data in Zustand
         setUser(token, user);
@@ -84,7 +87,9 @@ export default function LoginForm() {
         </LabelInputContainer>
 
         {/* Error Message */}
-        {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+        )}
 
         {/* Submit Button */}
         <button
@@ -118,5 +123,9 @@ const LabelInputContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
 };

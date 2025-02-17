@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
     "/",
     "/login",
     "/signup",
+    "/faq",
     "/verifyemail",
     "/emailverificationalert",
     "/api/auth/verifyemail",

@@ -51,6 +51,8 @@ export function Footer() {
                   className="text-muted-foreground hover:text-foreground"
                   prefetch={false}
                   aria-label={link.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Icon className="h-6 w-6 xl:h-7 xl:w-7" />
                 </Link>

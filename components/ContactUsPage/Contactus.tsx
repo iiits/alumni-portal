@@ -47,7 +47,7 @@ export function ContactUs() {
   };
 
   return (
-    <div className="max-w-2xl w-full mx-auto rounded-lg p-8 shadow-md bg-white dark:bg-gray-900 min-h-[600px]">
+    <div className="mt-12 max-w-2xl w-full mx-auto rounded-lg p-8 shadow-md bg-white dark:bg-gray-900 min-h-[600px]">
       <h2 className="font-bold text-xl text-gray-800 dark:text-gray-200">
         Contact Us
       </h2>

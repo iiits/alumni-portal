@@ -6,12 +6,16 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { axiosInstance } from "@/lib/api/axios";
+import { useUserStore } from "@/lib/store";
 
 export default function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Zustand Store
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,7 +24,7 @@ export default function LoginForm() {
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
-    
+
     try {
       const response = await axiosInstance.post("/auth/login", {
         identifier: data.identifier,
@@ -28,7 +32,12 @@ export default function LoginForm() {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
+        const { token, user } = response.data.data;
+
+        // Store user data in Zustand
+        setUser(token, user);
+
+        // Redirect to Home
         router.replace("/");
       }
     } catch (error: any) {
@@ -56,7 +65,7 @@ export default function LoginForm() {
           <Input
             id="identifier"
             name="identifier"
-            placeholder="Enter your college email or personal email or Student ID"
+            placeholder="Enter your college email, personal email, or Student ID"
             type="text"
             required
           />
@@ -75,9 +84,7 @@ export default function LoginForm() {
         </LabelInputContainer>
 
         {/* Error Message */}
-        {errorMessage && (
-          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
 
         {/* Submit Button */}
         <button
@@ -111,9 +118,5 @@ const LabelInputContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
 };

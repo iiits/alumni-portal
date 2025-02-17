@@ -23,9 +23,6 @@ export async function middleware(request: NextRequest) {
     "/api/contactus",
   ];
 
-  console.log("pathname", pathname);
-  console.log(unProtectedRoutes.includes(pathname));
-
   if (unProtectedRoutes.includes(pathname)) {
     return NextResponse.next();
   }

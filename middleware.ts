@@ -4,6 +4,11 @@ import { NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Bypass all static files from the middleware
+  if (pathname.match(/\.(svg|png|jpg|jpeg|gif|ico|json)$/)) {
+    return NextResponse.next();
+  }
+
   const unProtectedRoutes = [
     "/",
     "/login",
@@ -17,6 +22,9 @@ export async function middleware(request: NextRequest) {
     "/api/auth/signup",
     "/api/contactus",
   ];
+
+  console.log("pathname", pathname);
+  console.log(unProtectedRoutes.includes(pathname));
 
   if (unProtectedRoutes.includes(pathname)) {
     return NextResponse.next();

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky",
+    "prepare": "npx husky",
     "format": "prettier --write \"**/*.{ts,tsx}\""
   },
   "dependencies": {

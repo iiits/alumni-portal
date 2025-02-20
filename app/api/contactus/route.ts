@@ -1,44 +1,47 @@
-import { NextResponse } from "next/server";
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    // Parse the incoming JSON request body
     const body = await req.json();
-    const { email, name, subject, message } = body;
+    const { subject, message } = body;
+    const token = req.cookies.get("token")?.value;
 
-    // Check if all required fields are provided
-    if (!email || !name || !subject || !message) {
+    if (!subject || !message) {
       return NextResponse.json(
         { message: "All fields are required." },
         { status: 400 },
       );
     }
 
-    // Call the external backend API (if this is necessary)
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/contactus`,
       {
-        email,
-        name,
         subject,
         message,
       },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
 
-    // Return the response from the external API
-    return NextResponse.json(response.data, { status: response.status });
+    return NextResponse.json({
+      status: response.status,
+      message: "Contact form submitted successfully",
+      data: response.data,
+    });
   } catch (error: any) {
     console.error(
       "Contact form submission error:",
       error.response?.data || error.message,
     );
 
-    // Handle errors: if axios error, use axios response, otherwise use a fallback error message
     return NextResponse.json(
       {
-        message:
-          error.response?.data?.message || "Failed to submit contact form.",
+        message: "Contact form submission failed",
+        error: error.response?.data || error.message,
       },
       { status: error.response?.status || 500 },
     );

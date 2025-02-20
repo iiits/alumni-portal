@@ -6,128 +6,127 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { axiosInstance } from "@/lib/api/axios"; // Importing axios instance
+import { axiosInstance } from "@/lib/api/axios";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { useMutation } from "@tanstack/react-query";
+import React from "react";
 import { Textarea } from "../ui/textarea";
 
+interface ContactFormData {
+  subject: string;
+  message: string;
+}
+
 export function ContactUs() {
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle"); // Initialize as "idle"
-  const [errorMessage, setErrorMessage] = useState("");
+  const contactMutation = useMutation({
+    mutationFn: async (data: ContactFormData) => {
+      const response = await axiosInstance.post("/contactus", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      alert("Your message has been sent successfully!");
+    },
+    onError: (error: any) => {
+      alert(error.response?.data?.message || "Something went wrong.");
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    console.log("Form Data:", data);
-
-    setStatus("loading"); // Set status to "loading" only when form is being submitted
-
-    try {
-      // Make the API call to submit the contact form
-      const response = await axiosInstance.post("/contactus", data);
-
-      if (response.status === 200) {
-        setStatus("success");
-        alert("Your message has been sent successfully!");
-      } else {
-        setStatus("error");
-        setErrorMessage(response.data?.message || "Failed to submit message.");
-      }
-    } catch (error: any) {
-      console.error("Error submitting contact form:", error);
-      setStatus("error");
-      setErrorMessage(error.response?.data?.message || "Something went wrong.");
-    }
+    const data = {
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    };
+    contactMutation.mutate(data);
   };
 
+  const subjects = [
+    {
+      label: "General Inquiry",
+      value: "general",
+    },
+    {
+      label: "Technical Support",
+      value: "support",
+    },
+    {
+      label: "Feedback",
+      value: "feedback",
+    },
+    {
+      label: "Other",
+      value: "other",
+    },
+  ];
+
   return (
-    <div className="mt-12 max-w-2xl w-full mx-auto rounded-lg p-8 shadow-md bg-white dark:bg-gray-900 min-h-[600px]">
-      <h2 className="font-bold text-xl text-gray-800 dark:text-gray-200">
+    <div className="mt-8 mb-8 max-w-3xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Contact Us
       </h2>
-      <p className="text-gray-600 text-sm mt-2 dark:text-gray-400">
-        We&apos;d love to hear from you! Please fill out the form below.
+      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+        Have a question? We&apos;d love to hear from you.
       </p>
 
-      <form className="mt-6" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="my-8">
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
-          <Input
-            id="email"
-            name="email"
-            placeholder="your@email.com"
-            type="email"
-            required
-          />
-        </LabelInputContainer>
-
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            name="name"
-            placeholder="John Doe"
-            type="text"
-            required
-          />
-        </LabelInputContainer>
-
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="subject">Subject</Label>
+          <label className="text-neutral-800 dark:text-neutral-200">
+            Reason for Contact
+          </label>
           <Select name="subject" required>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a subject" />
+            <SelectTrigger className="w-full bg-white dark:bg-zinc-800">
+              <SelectValue placeholder="Select reason for contact" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="support">
-                Technical Support & Portal Assistance
-              </SelectItem>
-              <SelectItem value="events">Events & Reunions</SelectItem>
-              <SelectItem value="feedback">Feedback</SelectItem>
-              <SelectItem value="academic">
-                Academic Support & Resources
-              </SelectItem>
-              <SelectItem value="general">General Inquiry</SelectItem>
+              {subjects.map((subject) => (
+                <SelectItem key={subject.value} value={subject.value}>
+                  {subject.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </LabelInputContainer>
 
-        <LabelInputContainer className="mb-6">
-          <Label htmlFor="message">Message</Label>
+        <LabelInputContainer className="mb-4">
+          <label className="text-neutral-800 dark:text-neutral-200">
+            Your Message
+          </label>
           <Textarea
-            id="message"
+            placeholder="Type your message here"
             name="message"
-            placeholder="Enter your message here..."
-            rows={6}
             required
+            className={cn(
+              "min-h-[150px] resize-none bg-white dark:bg-zinc-800",
+              contactMutation.isPending && "opacity-50",
+            )}
+            disabled={contactMutation.isPending}
           />
         </LabelInputContainer>
 
         <button
-          className="bg-gradient-to-br from-black dark:from-zinc-900 to-neutral-600 w-full text-white rounded-md h-12 font-medium"
           type="submit"
+          disabled={contactMutation.isPending}
+          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
         >
-          Submit
+          {contactMutation.isPending ? "Sending..." : "Send Message"} &rarr;
+          <BottomGradient />
         </button>
-      </form>
 
-      {/* Conditional Feedback */}
-      {status === "loading" && <p>Submitting your message...</p>}
-      {status === "error" && <p className="text-red-500">{errorMessage}</p>}
-      {status === "success" && (
-        <p className="text-green-500">
-          Your message was successfully submitted!
-        </p>
-      )}
+        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+      </form>
     </div>
   );
 }
+
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+    </>
+  );
+};
 
 const LabelInputContainer = ({
   children,

@@ -1,70 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { axiosInstance } from "@/lib/api/axios";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function VerifyEmail() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
 
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading",
-  );
-  const [errorMessage, setErrorMessage] = useState("");
-  const [resending, setResending] = useState(false);
+  const verifyMutation = useMutation({
+    mutationFn: async (token: string) => {
+      const response = await axiosInstance.post("/auth/verifyemail", { token });
+      return response.data;
+    },
+    onSuccess: () => {
+      setTimeout(() => router.push("/login"), 3000);
+    },
+  });
 
-  useEffect(() => {
-    const verifyEmail = async () => {
-      if (!token) {
-        setStatus("error");
-        setErrorMessage("Invalid verification token.");
-        return;
-      }
-
-      try {
-        const response = await axiosInstance.post("/auth/verifyemail", {
-          token,
-        });
-
-        if (response.status === 200) {
-          setStatus("success");
-          setTimeout(() => router.push("/login"), 3000);
-        } else {
-          setStatus("error");
-          setErrorMessage(response.data?.message || "Verification failed.");
-        }
-      } catch (error: any) {
-        console.error("Verification failed:", error);
-        setStatus("error");
-        setErrorMessage(
-          error.response?.data?.message || "Something went wrong.",
-        );
-      }
-    };
-
-    verifyEmail();
-  }, [token, router]);
-
-  const handleResend = async () => {
-    setResending(true);
-    try {
+  const resendMutation = useMutation({
+    mutationFn: async () => {
       const response = await axiosInstance.post(
         "/api/auth/resend-verification",
       );
-      if (response.status === 200) {
-        alert("Verification email resent! Check your inbox.");
-      } else {
-        alert("Failed to resend verification email.");
-      }
-    } catch (error) {
-      console.error("Resend failed:", error);
+      return response.data;
+    },
+    onSuccess: () => {
+      alert("Verification email resent! Check your inbox.");
+    },
+    onError: () => {
       alert("Error resending verification email.");
-    } finally {
-      setResending(false);
+    },
+  });
+
+  useEffect(() => {
+    if (token) {
+      verifyMutation.mutate(token);
+    } else {
+      alert("No token found.");
+      router.push("/login");
     }
+  }, [token]);
+
+  const handleResend = () => {
+    resendMutation.mutate();
   };
+
+  const status = verifyMutation.isPending
+    ? "loading"
+    : verifyMutation.isSuccess
+      ? "success"
+      : "error";
 
   return (
     <div className="mt-8 mb-8 max-w-3xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
@@ -81,16 +69,19 @@ export default function VerifyEmail() {
           ? "Please wait while we verify your email."
           : status === "success"
             ? "You will be redirected shortly."
-            : errorMessage}
+            : verifyMutation.error?.message || "Something went wrong"}
       </p>
 
       {status === "error" && (
         <button
           className="mt-6 bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           onClick={handleResend}
-          disabled={resending}
+          disabled={resendMutation.isPending}
         >
-          {resending ? "Resending..." : "Resend Verification Email"} &rarr;
+          {resendMutation.isPending
+            ? "Resending..."
+            : "Resend Verification Email"}{" "}
+          &rarr;
           <BottomGradient />
         </button>
       )}

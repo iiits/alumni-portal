@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Textarea } from "../ui/textarea";
+import { toast } from "sonner";
 
 interface ContactFormData {
   subject: string;
@@ -24,10 +25,10 @@ export function ContactUs() {
       return response.data;
     },
     onSuccess: () => {
-      alert("Your message has been sent successfully!");
+      toast.success("Your message has been sent successfully!");
     },
     onError: (error: any) => {
-      alert(error.response?.data?.message || "Something went wrong.");
+      toast.error(error.response?.data?.message || "Something went wrong.");
     },
   });
 
@@ -98,7 +99,7 @@ export function ContactUs() {
             required
             className={cn(
               "min-h-[150px] resize-none bg-white dark:bg-zinc-800",
-              contactMutation.isPending && "opacity-50",
+              contactMutation.isPending && "opacity-50"
             )}
             disabled={contactMutation.isPending}
           />

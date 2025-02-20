@@ -3,53 +3,56 @@
 import { axiosInstance } from "@/lib/api/axios";
 import { useUserStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+
+interface LoginFormData {
+  identifier: string;
+  password: string;
+}
 
 export default function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  // Zustand Store
   const setUser = useUserStore((state) => state.setUser);
+
+  const loginMutation = useMutation({
+    mutationFn: async (data: LoginFormData) => {
+      const response = await axiosInstance.post("/auth/login", data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      const { token, user } = data.data;
+
+      // Set Cookies
+      document.cookie = `token=${token}; path=/; max-age=2592000`; // 30 days
+
+      // Store user data in Zustand
+      setUser(token, user);
+
+      // Reset form
+      formRef.current?.reset();
+
+      // Redirect to Home
+      router.replace("/");
+    },
+    onError: (error: any) => {
+      console.error("Login failed:", error);
+      alert(error.response?.data?.message || "Invalid credentials.");
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setErrorMessage("");
-
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-
-    try {
-      const response = await axiosInstance.post("/auth/login", {
-        identifier: data.identifier,
-        password: data.password,
-      });
-
-      if (response.status === 200) {
-        const { token, user } = response.data.data;
-
-        // Set Cookies
-        document.cookie = `token=${token}; path=/; max-age=2592000`; // 30 days
-
-        // Store user data in Zustand
-        setUser(token, user);
-
-        // Redirect to Home
-        router.replace("/");
-      }
-    } catch (error: any) {
-      console.error("Login failed:", error);
-      setErrorMessage(error.response?.data?.message || "Invalid credentials.");
-    } finally {
-      setLoading(false);
-      formRef.current?.reset();
-    }
+    const data = {
+      identifier: formData.get("identifier") as string,
+      password: formData.get("password") as string,
+    };
+    loginMutation.mutate(data);
   };
 
   return (
@@ -62,51 +65,50 @@ export default function LoginForm() {
       </p>
 
       <form className="my-8" onSubmit={handleSubmit} ref={formRef}>
-        {/* Username/Email/User ID Field */}
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="identifier">Email / Student ID</Label>
+        <LabelInputContainer>
+          <Label htmlFor="identifier">Email or Username</Label>
           <Input
             id="identifier"
             name="identifier"
-            placeholder="Enter your college email, personal email, or Student ID"
+            placeholder="Enter your email or username"
             type="text"
             required
+            disabled={loginMutation.isPending}
           />
         </LabelInputContainer>
 
-        {/* Password Field */}
-        <LabelInputContainer className="mb-4">
+        <LabelInputContainer className="mt-4">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
             name="password"
-            placeholder="•••••••••••"
+            placeholder="Enter your password"
             type="password"
             required
+            disabled={loginMutation.isPending}
           />
         </LabelInputContainer>
 
-        {/* Error Message */}
-        {errorMessage && (
-          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
-        )}
-
-        {/* Submit Button */}
         <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
           type="submit"
-          disabled={loading}
+          disabled={loginMutation.isPending}
+          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium mt-4"
         >
-          {loading ? "Logging in..." : "Login"} &rarr;
+          {loginMutation.isPending ? "Logging in..." : "Login"} &rarr;
           <BottomGradient />
         </button>
+
+        {loginMutation.isError && (
+          <p className="text-red-500 text-sm mt-2">
+            {loginMutation.error?.response?.data?.message || "Login failed"}
+          </p>
+        )}
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
       </form>
     </div>
   );
 }
-
 const BottomGradient = () => {
   return (
     <>

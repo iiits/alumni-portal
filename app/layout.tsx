@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import Providers from "./provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -26,6 +27,13 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <Toaster
+            position="top-right"
+            expand={true}
+            richColors
+            closeButton
+            theme="light"
+          />
         </Providers>
       </body>
     </html>

@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { toast } from "sonner";
 
 interface SignupFormData {
   name: string;
@@ -45,14 +46,13 @@ export function SignupForm() {
       return response.data;
     },
     onSuccess: () => {
+      toast.success("Account created successfully. Please verify your email.");
       formRef.current?.reset();
       router.push("/emailverificationalert");
     },
     onError: (error: any) => {
       console.error("Signup failed:", error);
-      alert(
-        error.response?.data?.message || "Signup failed. Please try again.",
-      );
+      toast.error(error.response?.data?.message || "Signup failed");
     },
   });
 

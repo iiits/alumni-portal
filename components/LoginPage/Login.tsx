@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { toast } from "sonner";
 
 interface LoginFormData {
   identifier: string;
@@ -25,6 +26,7 @@ export default function LoginForm() {
       return response.data;
     },
     onSuccess: (data) => {
+      toast.success("Logged in successfully!");
       const { token, user } = data.data;
 
       // Set Cookies
@@ -41,7 +43,7 @@ export default function LoginForm() {
     },
     onError: (error: any) => {
       console.error("Login failed:", error);
-      alert(error.response?.data?.message || "Invalid credentials.");
+      toast.error(error.response?.data?.message || "Login failed");
     },
   });
 

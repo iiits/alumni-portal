@@ -99,7 +99,7 @@ export function ContactUs() {
             required
             className={cn(
               "min-h-[150px] resize-none bg-white dark:bg-zinc-800",
-              contactMutation.isPending && "opacity-50"
+              contactMutation.isPending && "opacity-50",
             )}
             disabled={contactMutation.isPending}
           />

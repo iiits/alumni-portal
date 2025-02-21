@@ -2,6 +2,8 @@
 
 import { axiosInstance } from "@/lib/api/axios";
 import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -46,7 +48,7 @@ export default function VerifyEmail() {
     if (token) {
       verifyMutation.mutate(token);
     } else {
-      alert("No token found.");
+      toast.warning("No token found. Redirecting to login...");
       router.push("/login");
     }
   }, [token]);
@@ -62,36 +64,76 @@ export default function VerifyEmail() {
       : "error";
 
   return (
-    <div className="mt-8 mb-8 max-w-3xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-      <h2 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
-        {status === "loading"
-          ? "Verifying your email..."
-          : status === "success"
-            ? "Email verified successfully!"
-            : "Verification failed"}
-      </h2>
+    <div className="min-h-[80vh] w-full flex items-center justify-center px-4">
+      <div className="w-full max-w-md mx-auto space-y-8">
+        {/* Email Verification Image */}
+        <div className="relative w-48 h-48 mx-auto">
+          <Image
+            src={
+              status === "loading" ? "/email-loading.svg" : "/verify-email.svg"
+            }
+            alt="Email Verification"
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
 
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        {status === "loading"
-          ? "Please wait while we verify your email."
-          : status === "success"
-            ? "You will be redirected shortly."
-            : verifyMutation.error?.message || "Something went wrong"}
-      </p>
+        {/* Status Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-4">
+          <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">
+            {status === "loading"
+              ? "Verifying your email..."
+              : status === "success"
+                ? "Email verified successfully!"
+                : "Verification failed"}
+          </h2>
 
-      {status === "error" && (
-        <button
-          className="mt-6 bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-          onClick={handleResend}
-          disabled={resendMutation.isPending}
-        >
-          {resendMutation.isPending
-            ? "Resending..."
-            : "Resend Verification Email"}{" "}
-          &rarr;
-          <BottomGradient />
-        </button>
-      )}
+          <p className="text-gray-600 dark:text-gray-300 text-center">
+            {status === "loading" ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Please wait while we verify your email
+              </span>
+            ) : status === "success" ? (
+              "You will be redirected to login shortly"
+            ) : (
+              verifyMutation.error?.message || "Something went wrong"
+            )}
+          </p>
+
+          {/* Action Button */}
+          {status === "error" && (
+            <button
+              onClick={handleResend}
+              disabled={resendMutation.isPending}
+              className="w-full px-4 py-2 text-white bg-purple-600 hover:bg-purple-700 rounded-lg
+                            transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+                            flex items-center justify-center gap-2"
+            >
+              {resendMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Resending...
+                </>
+              ) : (
+                "Resend Verification Email"
+              )}
+            </button>
+          )}
+        </div>
+
+        {/* Help Text */}
+        <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+          Need help?{" "}
+          <button
+            onClick={() => router.push("/contactus")}
+            className="text-purple-600 hover:text-purple-700 font-medium"
+          >
+            Contact Support
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

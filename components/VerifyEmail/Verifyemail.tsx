@@ -30,7 +30,7 @@ export default function VerifyEmail() {
   const resendMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosInstance.post(
-        "/api/auth/resend-verification"
+        "/api/auth/resend-verification",
       );
       return response.data;
     },
@@ -39,7 +39,7 @@ export default function VerifyEmail() {
     },
     onError: () => {
       toast.error(
-        "Error resending verification email. Please try again later."
+        "Error resending verification email. Please try again later.",
       );
     },
   });

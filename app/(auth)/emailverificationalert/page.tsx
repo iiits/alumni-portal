@@ -6,7 +6,7 @@ import Image from "next/image";
 import React from "react";
 import { toast } from "sonner";
 
-function emailVerificationAlert() {
+function EmailVerificationAlert() {
   const resendMutation = useMutation({
     mutationFn: async () => {
       const response = await axiosInstance.post(
@@ -56,7 +56,7 @@ function emailVerificationAlert() {
           {/* Additional Information */}
           <div className="mt-8 space-y-4 text-sm text-gray-500">
             <p>
-              Didn't receive the email?{" "}
+              Didn&apos;t receive the email?{" "}
               <button
                 onClick={handleResend}
                 className="text-purple-600 hover:text-purple-700 font-medium"
@@ -65,8 +65,8 @@ function emailVerificationAlert() {
               </button>
             </p>
             <p>
-              Please also check your spam folder if you don't see the email in
-              your inbox.
+              Please also check your spam folder if you don&apos;t see the email
+              in your inbox.
             </p>
           </div>
         </div>
@@ -75,4 +75,4 @@ function emailVerificationAlert() {
   );
 }
 
-export default emailVerificationAlert;
+export default EmailVerificationAlert;

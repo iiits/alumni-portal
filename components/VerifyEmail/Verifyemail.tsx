@@ -4,6 +4,7 @@ import { axiosInstance } from "@/lib/api/axios";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function VerifyEmail() {
   const searchParams = useSearchParams();
@@ -16,7 +17,11 @@ export default function VerifyEmail() {
       return response.data;
     },
     onSuccess: () => {
+      toast.success("Email verified successfully! Redirecting to login...");
       setTimeout(() => router.push("/login"), 3000);
+    },
+    onError: () => {
+      toast.error("Error verifying email. Please try again later.");
     },
   });
 
@@ -28,10 +33,12 @@ export default function VerifyEmail() {
       return response.data;
     },
     onSuccess: () => {
-      alert("Verification email resent! Check your inbox.");
+      toast.success("Verification email resent! Check your inbox.");
     },
     onError: () => {
-      alert("Error resending verification email.");
+      toast.error(
+        "Error resending verification email. Please try again later.",
+      );
     },
   });
 

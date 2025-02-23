@@ -1,4 +1,4 @@
-import React ,{JSX}from "react";
+import React, { JSX } from "react";
 import { Mail } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/api/axios";
@@ -47,11 +47,19 @@ const socialIcons: Record<SocialMediaProfile["type"], JSX.Element> = {
   linkedin: <Linkedin className="w-6 h-6 text-blue-600 hover:text-blue-800" />,
   twitter: <SiX className="w-6 h-6 text-blue-400 hover:text-blue-600" />,
   github: <SiGithub className="w-6 h-6 text-gray-800 hover:text-gray-900" />,
-  instagram: <SiInstagram className="w-6 h-6 text-pink-500 hover:text-pink-700" />,
-  facebook: <SiFacebook className="w-6 h-6 text-blue-700 hover:text-blue-900" />,
+  instagram: (
+    <SiInstagram className="w-6 h-6 text-pink-500 hover:text-pink-700" />
+  ),
+  facebook: (
+    <SiFacebook className="w-6 h-6 text-blue-700 hover:text-blue-900" />
+  ),
   youtube: <SiYoutube className="w-6 h-6 text-red-600 hover:text-red-800" />,
-  reddit: <SiReddit className="w-6 h-6 text-orange-600 hover:text-orange-800" />,
-  discord: <SiDiscord className="w-6 h-6 text-purple-600 hover:text-purple-800" />,
+  reddit: (
+    <SiReddit className="w-6 h-6 text-orange-600 hover:text-orange-800" />
+  ),
+  discord: (
+    <SiDiscord className="w-6 h-6 text-purple-600 hover:text-purple-800" />
+  ),
 };
 
 const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
@@ -95,7 +103,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       </div>
 
       {/* Bio Section */}
-      <p className="text-gray-700 text-lg border-l-4 pl-4 border-blue-500">{data.bio}</p>
+      <p className="text-gray-700 text-lg border-l-4 pl-4 border-blue-500">
+        {data.bio}
+      </p>
 
       {/* Social Media Links */}
       <div className="flex space-x-4">
@@ -111,17 +121,19 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
                 >
                   {socialIcons[profile.type]}
                 </a>
-              )
+              ),
           )}
       </div>
 
       {/* Emails */}
       <div className="space-y-2 border-t pt-4">
         <p className="flex items-center text-gray-700 text-sm">
-          <Mail className="w-4 h-4 mr-2" /> <strong>College Email:</strong> {data.collegeEmail}
+          <Mail className="w-4 h-4 mr-2" /> <strong>College Email:</strong>{" "}
+          {data.collegeEmail}
         </p>
         <p className="flex items-center text-gray-700 text-sm">
-          <Mail className="w-4 h-4 mr-2" /> <strong>Personal Email:</strong> {data.personalEmail}
+          <Mail className="w-4 h-4 mr-2" /> <strong>Personal Email:</strong>{" "}
+          {data.personalEmail}
         </p>
       </div>
     </div>

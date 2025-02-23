@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import UserProfile from "@/components/ProfilePage/UserProfile";
 import { useParams } from "next/navigation";
 

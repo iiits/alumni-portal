@@ -37,7 +37,7 @@ export const navbarItems: NavbarItem[] = [
   {
     id: "verification",
     title: "Alumni Verification",
-    route: "/alumnidetails"
+    route: "/alumnidetails",
   },
   {
     id: "faqs",

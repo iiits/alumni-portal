@@ -44,10 +44,14 @@ export async function POST(req: Request) {
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
-    console.error("Alumni details submission error:", error.response?.data || error.message);
+    console.error(
+      "Alumni details submission error:",
+      error.response?.data || error.message,
+    );
     return NextResponse.json(
       {
-        message: error.response?.data?.message || "Alumni details submission failed.",
+        message:
+          error.response?.data?.message || "Alumni details submission failed.",
       },
       { status: error.response?.status || 500 },
     );

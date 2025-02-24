@@ -128,7 +128,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
                 >
                   {socialIcons[profile.type]}
                 </Link>
-              )
+              ),
           )}
       </div>
 

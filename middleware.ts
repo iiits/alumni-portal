@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
     "/faq",
     "/contactus",
     "/verifyemail",
+    "/alumnidetails",
     "/emailverificationalert",
     "/api/auth/verifyemail",
     "/api/auth/login",

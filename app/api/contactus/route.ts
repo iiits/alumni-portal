@@ -5,7 +5,15 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { subject, message } = body;
+
     const token = req.cookies.get("token")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { message: "Not authorized - No token provided." },
+        { status: 401 },
+      );
+    }
 
     if (!subject || !message) {
       return NextResponse.json(

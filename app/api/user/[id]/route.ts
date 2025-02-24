@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -15,18 +15,18 @@ export async function GET(
       );
     }
 
-    const authHeader = req.headers.get("authorization");
+    const token = req.cookies.get("token")?.value;
 
-    if (!authHeader) {
+    if (!token) {
       return NextResponse.json(
-        { message: "Not authorized - No token" },
+        { message: "Not authorized - No token provided." },
         { status: 401 },
       );
     }
 
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`,
-      { headers: { Authorization: authHeader } },
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return NextResponse.json(response.data, { status: response.status });

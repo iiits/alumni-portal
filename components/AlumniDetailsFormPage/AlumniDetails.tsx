@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -7,20 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 import { axiosInstance } from "@/lib/api/axios";
+import { useUserStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
+import { AlertCircle, PlusCircle, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
-import { PlusCircle, X } from "lucide-react";
-import { useUserStore } from "@/lib/store";
-import { toast } from "sonner";
 
 interface JobPositionData {
   title: string;
@@ -264,16 +263,9 @@ export function AlumniDetailsForm() {
 
   const alumniMutation = useMutation({
     mutationFn: async (data: AlumniDetailsPayload) => {
-      const token = useUserStore.getState().token;
-
-      if (!token) {
-        throw new Error("Unauthorized: No token available.");
-      }
-
       try {
         const response = await axiosInstance.post("/alumnidetails", data, {
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });

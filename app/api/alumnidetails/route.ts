@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { id, jobPosition, education, location, expertise, verified } = body;
 
-    if (!id || !jobPosition || !education || !location || !expertise) {
+    if (!jobPosition || !education || !location || !expertise) {
       return NextResponse.json(
         { message: "All required fields must be provided." },
         { status: 400 },

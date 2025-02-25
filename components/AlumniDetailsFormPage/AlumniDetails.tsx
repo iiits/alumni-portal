@@ -50,7 +50,6 @@ interface LocationData {
 
 // This interface represents the data structure expected by the API
 interface AlumniDetailsPayload {
-  id: string;
   jobPosition: JobPositionData[];
   education: EducationData[];
   location: LocationData;
@@ -81,11 +80,6 @@ export function AlumniDetailsForm() {
     payload: AlumniDetailsPayload,
   ): { isValid: boolean; errors: string[] } => {
     const errors: string[] = [];
-
-    // Check id
-    if (!payload.id) {
-      errors.push("User ID is required");
-    }
 
     // Check jobPosition array
     if (
@@ -238,7 +232,6 @@ export function AlumniDetailsForm() {
     }
 
     const payload: AlumniDetailsPayload = {
-      id: userId,
       jobPosition,
       education: educationData,
       location: {
@@ -264,6 +257,8 @@ export function AlumniDetailsForm() {
   const alumniMutation = useMutation({
     mutationFn: async (data: AlumniDetailsPayload) => {
       try {
+        console.log("IM here");
+        console.log(data);
         const response = await axiosInstance.post("/alumnidetails", data, {
           headers: {
             "Content-Type": "application/json",

@@ -9,7 +9,7 @@ interface EventContent {
   description: string;
 }
 
-interface EventCardProps {
+export interface EventCardProps {
   name: string;
   dateTime: string;
   endDateTime: string;

@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     if (!token) {
       return NextResponse.json(
         { message: "Unauthorized. Please login to view events." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -35,13 +35,13 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     console.error(
       "Error fetching events:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     return NextResponse.json(
       {
         message: error.response?.data?.message || "Failed to fetch events.",
       },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 500 },
     );
   }
 }

@@ -47,6 +47,6 @@ export const navbarItems: NavbarItem[] = [
   {
     id: "pages",
     title: "Referrals",
-    route: "/referrals"
+    route: "/referrals",
   },
 ];

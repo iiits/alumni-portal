@@ -1,4 +1,4 @@
-import Referrals from "@/components/ReferralsPage/Referrals"
+import Referrals from "@/components/ReferralsPage/Referrals";
 
 export default function ReferralsPage() {
   return (

@@ -1,10 +1,5 @@
 "use client";
-import {
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-  motion,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -18,15 +13,27 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setHeight(entry.contentRect.height);
+      }
+    });
+
     if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setHeight(rect.height);
+      observer.observe(ref.current);
     }
-  }, [ref]);
+
+    // Cleanup
+    return () => {
+      if (ref.current) {
+        observer.disconnect();
+      }
+    };
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 10%", "end 100%"],
+    offset: ["start 15%", "end 60%"],
   });
 
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);

@@ -31,7 +31,7 @@ interface UserProfileData {
   bio: string;
   collegeEmail: string;
   personalEmail: string;
-  role:'student' | 'alumni';
+  role: "student" | "alumni";
   profiles: SocialMediaProfile[];
   alumniDetails?: {
     verified: boolean;
@@ -193,18 +193,28 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           <h2 className="text-xl font-semibold">Alumni Details</h2>
 
           <p className="text-lg font-semibold">
-            Location: {data.alumniDetails.location.city}, {data.alumniDetails.location.country}
+            Location: {data.alumniDetails.location.city},{" "}
+            {data.alumniDetails.location.country}
           </p>
 
           {/* Job Positions */}
           <div>
             <p className="text-lg font-semibold">Job Positions:</p>
             {data.alumniDetails.jobPosition.map((job, index) => (
-              <div key={index} className="pl-4 border-l-2 border-gray-300 space-y-1">
-                <p className="text-gray-700">{job.title} ({job.type})</p>
-                <p className="text-gray-600">{job.location} | {job.jobType}</p>
+              <div
+                key={index}
+                className="pl-4 border-l-2 border-gray-300 space-y-1"
+              >
+                <p className="text-gray-700">
+                  {job.title} ({job.type})
+                </p>
+                <p className="text-gray-600">
+                  {job.location} | {job.jobType}
+                </p>
                 <p className="text-gray-500">
-                  {job.ongoing ? "Ongoing" : `${job.start.split("T")[0]} to ${job.end ? job.end.split("T")[0] : "Present"}`}
+                  {job.ongoing
+                    ? "Ongoing"
+                    : `${job.start.split("T")[0]} to ${job.end ? job.end.split("T")[0] : "Present"}`}
                 </p>
                 <p className="text-gray-500">{job.description}</p>
               </div>
@@ -215,11 +225,18 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           <div>
             <p className="text-lg font-semibold">Education:</p>
             {data.alumniDetails.education.map((edu, index) => (
-              <div key={index} className="pl-4 border-l-2 border-gray-300 space-y-1">
-                <p className="text-gray-700">{edu.school} - {edu.degree} in {edu.fieldOfStudy}</p>
+              <div
+                key={index}
+                className="pl-4 border-l-2 border-gray-300 space-y-1"
+              >
+                <p className="text-gray-700">
+                  {edu.school} - {edu.degree} in {edu.fieldOfStudy}
+                </p>
                 <p className="text-gray-600">{edu.location}</p>
                 <p className="text-gray-500">
-                  {edu.ongoing ? "Ongoing" : `${edu.start.split("T")[0]} to ${edu.end.split("T")[0]}`}
+                  {edu.ongoing
+                    ? "Ongoing"
+                    : `${edu.start.split("T")[0]} to ${edu.end.split("T")[0]}`}
                 </p>
                 <p className="text-gray-500">{edu.description}</p>
               </div>

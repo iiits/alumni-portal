@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
-export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
   try {
     const token = req.cookies.get("token")?.value;
     if (!token) {
       return NextResponse.json(
         { message: "Not authorized - No token provided." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -17,7 +20,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     if (!alumniId) {
       return NextResponse.json(
         { message: "Alumni ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -27,21 +30,21 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/api/alumni-details/${alumniId}`,
       updateData,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
     console.error(
       "Error updating alumni details:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     return NextResponse.json(
       {
         message:
           error.response?.data?.message || "Failed to update alumni details.",
       },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 500 },
     );
   }
 }

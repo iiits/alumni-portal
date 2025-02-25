@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Modal, ModalBody, useModal, ModalContent, ModalFooter, ModalTrigger } from "../ui/animated-modal";
+import {
+  Modal,
+  ModalBody,
+  useModal,
+  ModalContent,
+  ModalFooter,
+  ModalTrigger,
+} from "../ui/animated-modal";
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/api/axios";
 import { useRouter } from "next/navigation";
@@ -40,7 +47,9 @@ interface EditAlumniDetailsProps {
   alumniData: AlumniDetails;
 }
 
-const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => {
+const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
+  alumniData,
+}) => {
   const router = useRouter();
   const { open, setOpen } = useModal();
   const [formData, setFormData] = useState(alumniData);
@@ -66,11 +75,21 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
     },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, location: { ...formData.location, [e.target.name]: e.target.value } });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setFormData({
+      ...formData,
+      location: { ...formData.location, [e.target.name]: e.target.value },
+    });
   };
 
-  const handleArrayChange = (field: string, index: number, key: string, value: any) => {
+  const handleArrayChange = (
+    field: string,
+    index: number,
+    key: string,
+    value: any,
+  ) => {
     const updatedArray = [...(formData as any)[field]];
     updatedArray[index] = { ...updatedArray[index], [key]: value };
     setFormData({ ...formData, [field]: updatedArray });
@@ -78,7 +97,10 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
 
   const addExpertise = () => {
     if (newExpertise.trim() !== "") {
-      setFormData({ ...formData, expertise: [...formData.expertise, newExpertise.trim()] });
+      setFormData({
+        ...formData,
+        expertise: [...formData.expertise, newExpertise.trim()],
+      });
       setNewExpertise("");
     }
   };
@@ -106,11 +128,21 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
               {/* Location */}
               <div>
                 <label className="block font-semibold">City</label>
-                <input name="city" value={formData.location.city} onChange={handleChange} className="w-full p-2 border rounded-md" />
+                <input
+                  name="city"
+                  value={formData.location.city}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-md"
+                />
               </div>
               <div>
                 <label className="block font-semibold">Country</label>
-                <input name="country" value={formData.location.country} onChange={handleChange} className="w-full p-2 border rounded-md" />
+                <input
+                  name="country"
+                  value={formData.location.country}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-md"
+                />
               </div>
 
               {/* Job Positions */}
@@ -118,9 +150,31 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
               {formData.jobPosition.map((job, index) => (
                 <div key={index} className="p-4 bg-gray-100 rounded-md">
                   <label className="block font-semibold">Title</label>
-                  <input value={job.title} onChange={(e) => handleArrayChange("jobPosition", index, "title", e.target.value)} className="w-full p-2 border rounded-md" />
+                  <input
+                    value={job.title}
+                    onChange={(e) =>
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "title",
+                        e.target.value,
+                      )
+                    }
+                    className="w-full p-2 border rounded-md"
+                  />
                   <label className="block font-semibold mt-2">Company</label>
-                  <input value={job.location} onChange={(e) => handleArrayChange("jobPosition", index, "location", e.target.value)} className="w-full p-2 border rounded-md" />
+                  <input
+                    value={job.location}
+                    onChange={(e) =>
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "location",
+                        e.target.value,
+                      )
+                    }
+                    className="w-full p-2 border rounded-md"
+                  />
                 </div>
               ))}
 
@@ -129,9 +183,31 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
               {formData.education.map((edu, index) => (
                 <div key={index} className="p-4 bg-gray-100 rounded-md">
                   <label className="block font-semibold">School</label>
-                  <input value={edu.school} onChange={(e) => handleArrayChange("education", index, "school", e.target.value)} className="w-full p-2 border rounded-md" />
+                  <input
+                    value={edu.school}
+                    onChange={(e) =>
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "school",
+                        e.target.value,
+                      )
+                    }
+                    className="w-full p-2 border rounded-md"
+                  />
                   <label className="block font-semibold mt-2">Degree</label>
-                  <input value={edu.degree} onChange={(e) => handleArrayChange("education", index, "degree", e.target.value)} className="w-full p-2 border rounded-md" />
+                  <input
+                    value={edu.degree}
+                    onChange={(e) =>
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "degree",
+                        e.target.value,
+                      )
+                    }
+                    className="w-full p-2 border rounded-md"
+                  />
                 </div>
               ))}
 
@@ -140,9 +216,18 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
                 <h3 className="font-semibold">Expertise</h3>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {formData.expertise.map((exp, index) => (
-                    <div key={index} className="flex items-center bg-gray-200 px-3 py-1 rounded-full">
+                    <div
+                      key={index}
+                      className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                    >
                       <span>{exp}</span>
-                      <button type="button" onClick={() => removeExpertise(index)} className="ml-2 text-red-600 font-bold">❌</button>
+                      <button
+                        type="button"
+                        onClick={() => removeExpertise(index)}
+                        className="ml-2 text-red-600 font-bold"
+                      >
+                        ❌
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -154,12 +239,22 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({ alumniData }) => 
                     className="w-full p-2 border rounded-md"
                     placeholder="Add new expertise"
                   />
-                  <button type="button" onClick={addExpertise} className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md">Add</button>
+                  <button
+                    type="button"
+                    onClick={addExpertise}
+                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md"
+                  >
+                    Add
+                  </button>
                 </div>
               </div>
 
               <ModalFooter>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md w-full" disabled={isLoading}>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Updating..." : "Update"}
                 </button>
               </ModalFooter>

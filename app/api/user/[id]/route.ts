@@ -44,13 +44,16 @@ export async function GET(
     );
   }
 }
-export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
   try {
     const token = req.cookies.get("token")?.value;
     if (!token) {
       return NextResponse.json(
         { message: "Not authorized - No token provided." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -67,22 +70,21 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`,
       updateData,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
     console.error(
       "Error updating user profile:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     return NextResponse.json(
       {
         message:
           error.response?.data?.message || "Failed to update user profile.",
       },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 500 },
     );
   }
 }
-

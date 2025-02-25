@@ -80,7 +80,6 @@ export const ModalBody = ({
   const modalRef = useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
   const { setOpen } = useModal();
   useOutsideClick(modalRef, () => setOpen(false));
-  
 
   return (
     <AnimatePresence>

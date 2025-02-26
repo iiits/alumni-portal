@@ -1,48 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/api/axios";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
+import { axiosInstance } from "@/lib/api/axios";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ReferralFormData } from "./types";
 
-interface JobDetails {
-  title: string;
-  description: string;
-  company: string;
-  role: string;
-  link: string;
-}
-
-interface ReferralFormData {
-  jobDetails: JobDetails;
-  lastApplyDate: string;
-  numberOfReferrals: number;
-}
-
-interface CreateReferralDialogProps {
+interface CreateReferralProps {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  onSuccess: () => void;
+  setIsOpen: (open: boolean) => void;
+  refetch: () => void;
 }
 
-export default function CreateReferralDialog({
+export default function CreateNew({
   isOpen,
   setIsOpen,
-  onSuccess,
-}: CreateReferralDialogProps) {
+  refetch,
+}: CreateReferralProps) {
   const [formData, setFormData] = useState<ReferralFormData>({
     jobDetails: {
       title: "",
@@ -57,24 +42,17 @@ export default function CreateReferralDialog({
 
   const createReferralMutation = useMutation({
     mutationFn: async (data: ReferralFormData) => {
-      const response = await axiosInstance.post("/referrals", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axiosInstance.post("/referrals", data);
       return response.data;
     },
     onSuccess: () => {
       toast.success("Referral created successfully!");
       setIsOpen(false);
       resetForm();
-      onSuccess();
+      refetch();
     },
     onError: (error: any) => {
-      const errorMessage =
-        error.response?.data?.message || "Failed to create referral";
-      toast.error(errorMessage);
-      console.error("Error creating referral:", error);
+      toast.error(error.response?.data?.message || "Failed to create referral");
     },
   });
 
@@ -82,64 +60,27 @@ export default function CreateReferralDialog({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-
     if (name.includes("jobDetails.")) {
       const field = name.split(".")[1];
-      setFormData({
-        ...formData,
+      setFormData((prev) => ({
+        ...prev,
         jobDetails: {
-          ...formData.jobDetails,
+          ...prev.jobDetails,
           [field]: value,
         },
-      });
+      }));
     } else if (name === "numberOfReferrals") {
-      // Handle number input
       const numValue = parseInt(value);
-      setFormData({
-        ...formData,
-        [name]: isNaN(numValue) ? 0 : Math.max(0, numValue), // Ensure non-negative
-      });
+      setFormData((prev) => ({
+        ...prev,
+        [name]: isNaN(numValue) ? 0 : Math.max(0, numValue),
+      }));
     } else {
-      setFormData({
-        ...formData,
+      setFormData((prev) => ({
+        ...prev,
         [name]: value,
-      });
+      }));
     }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validation
-    const { jobDetails, lastApplyDate } = formData;
-    if (
-      !jobDetails.title ||
-      !jobDetails.description ||
-      !jobDetails.company ||
-      !jobDetails.role ||
-      !jobDetails.link ||
-      !lastApplyDate
-    ) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    // URL validation
-    const urlPattern = /^https?:\/\/\S+$/;
-    if (!urlPattern.test(jobDetails.link)) {
-      toast.error("Please provide a valid URL for the job link");
-      return;
-    }
-
-    // Date validation
-    const applyDate = new Date(lastApplyDate);
-    const currentDate = new Date();
-    if (applyDate <= currentDate) {
-      toast.error("Last apply date must be in the future");
-      return;
-    }
-
-    createReferralMutation.mutate(formData);
   };
 
   const resetForm = () => {
@@ -156,6 +97,24 @@ export default function CreateReferralDialog({
     });
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const urlPattern = /^https?:\/\/\S+$/;
+    if (!urlPattern.test(formData.jobDetails.link)) {
+      toast.error("Please provide a valid URL for the job link");
+      return;
+    }
+
+    const applyDate = new Date(formData.lastApplyDate);
+    const currentDate = new Date();
+    if (applyDate <= currentDate) {
+      toast.error("Last apply date must be in the future");
+      return;
+    }
+
+    createReferralMutation.mutate(formData);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -163,7 +122,7 @@ export default function CreateReferralDialog({
           <span className="text-lg">+</span> Create Referral
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg mx-auto p-6 rounded-lg shadow-lg">
+      <DialogContent className="max-w-[90vw] sm:max-w-lg lg:max-w-2xl max-h-[80vh] mx-auto p-6 rounded-lg shadow-lg overflow-y-scroll">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-xl font-semibold">
             Create a New Referral
@@ -171,64 +130,67 @@ export default function CreateReferralDialog({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-5">
           <LabelInputContainer>
-            <Label htmlFor="jobDetails.title">Job Title*</Label>
+            <label htmlFor="jobDetails.title">Job Title</label>
             <Input
               id="jobDetails.title"
               name="jobDetails.title"
               value={formData.jobDetails.title}
               onChange={handleInputChange}
+              placeholder="e.g. Software Development Engineer"
               required
             />
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <Label htmlFor="jobDetails.company">Company*</Label>
+            <label htmlFor="jobDetails.company">Company</label>
             <Input
               id="jobDetails.company"
               name="jobDetails.company"
               value={formData.jobDetails.company}
               onChange={handleInputChange}
+              placeholder="e.g. Google, Inc."
               required
             />
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <Label htmlFor="jobDetails.role">Role*</Label>
+            <label htmlFor="jobDetails.role">Role</label>
             <Input
               id="jobDetails.role"
               name="jobDetails.role"
               value={formData.jobDetails.role}
               onChange={handleInputChange}
+              placeholder="e.g. SDE II"
               required
             />
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <Label htmlFor="jobDetails.link">Job Link*</Label>
+            <label htmlFor="jobDetails.description">Description</label>
+            <Textarea
+              id="jobDetails.description"
+              name="jobDetails.description"
+              value={formData.jobDetails.description}
+              onChange={handleInputChange}
+              placeholder="Job description and requirements..."
+              required
+            />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <label htmlFor="jobDetails.link">Job Link</label>
             <Input
               id="jobDetails.link"
               name="jobDetails.link"
               value={formData.jobDetails.link}
               onChange={handleInputChange}
-              placeholder="https://..."
+              placeholder="https://example.com/job"
               required
             />
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <Label htmlFor="lastApplyDate">Last Apply Date*</Label>
-            <Input
-              id="lastApplyDate"
-              name="lastApplyDate"
-              type="date"
-              value={formData.lastApplyDate}
-              onChange={handleInputChange}
-              min={new Date().toISOString().split("T")[0]}
-              required
-            />
-          </LabelInputContainer>
-          <LabelInputContainer>
-            <Label htmlFor="numberOfReferrals">Number of Referrals*</Label>
+            <label htmlFor="numberOfReferrals">Number of Referrals</label>
             <Input
               id="numberOfReferrals"
               name="numberOfReferrals"
@@ -239,33 +201,29 @@ export default function CreateReferralDialog({
               required
             />
           </LabelInputContainer>
+
           <LabelInputContainer>
-            <Label htmlFor="jobDetails.description">Description*</Label>
-            <Textarea
-              id="jobDetails.description"
-              name="jobDetails.description"
-              value={formData.jobDetails.description}
+            <label htmlFor="lastApplyDate">Last Apply Date</label>
+            <Input
+              id="lastApplyDate"
+              name="lastApplyDate"
+              type="date"
+              value={formData.lastApplyDate}
               onChange={handleInputChange}
-              rows={4}
-              maxLength={2000}
+              min={new Date().toISOString().split("T")[0]}
               required
             />
           </LabelInputContainer>
 
-          <DialogFooter className="mt-6 flex justify-end gap-3">
-            <Button
-              variant="outline"
-              type="button"
-              onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={createReferralMutation.isPending}>
-              {createReferralMutation.isPending
-                ? "Creating..."
-                : "Create Referral"}
-            </Button>
-          </DialogFooter>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={createReferralMutation.isPending}
+          >
+            {createReferralMutation.isPending
+              ? "Creating..."
+              : "Create Referral"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

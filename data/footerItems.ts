@@ -71,30 +71,22 @@ export const footerItems: FooterData = {
       href: "/",
     },
     {
-      title: "About",
-      href: "/about",
+      title: "Events",
+      href: "/events",
     },
     {
-      title: "Services",
-      href: "/services",
+      title: "Referrals",
+      href: "/referrals",
     },
     {
-      title: "Contact",
-      href: "/contact",
+      title: "Jobs",
+      href: "/jobs",
     },
   ],
   resources: [
     {
-      title: "Documentation",
-      href: "/docs",
-    },
-    {
-      title: "Tutorials",
-      href: "/tutorials",
-    },
-    {
-      title: "Support",
-      href: "/support",
+      title: "Contact Us",
+      href: "/contactus",
     },
     {
       title: "FAQs",

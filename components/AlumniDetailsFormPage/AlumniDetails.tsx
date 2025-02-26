@@ -257,8 +257,6 @@ export function AlumniDetailsForm() {
   const alumniMutation = useMutation({
     mutationFn: async (data: AlumniDetailsPayload) => {
       try {
-        console.log("IM here");
-        console.log(data);
         const response = await axiosInstance.post("/alumnidetails", data, {
           headers: {
             "Content-Type": "application/json",

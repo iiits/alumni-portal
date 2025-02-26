@@ -1,15 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ userId: string }> }, // Ensure params is awaited
+  context: { params: Promise<{ userId: string }> },
 ) {
   try {
-    // Await params before extracting userId
     const { userId } = await context.params;
 
-    // Extract token from cookies
     const token = req.cookies.get("token")?.value;
     if (!token) {
       return NextResponse.json(
@@ -18,7 +16,6 @@ export async function GET(
       );
     }
 
-    // Send request to backend API
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/user/${userId}`,
       {

@@ -3,12 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    // Extract search parameters from request URL
     const { searchParams } = new URL(req.url);
     let month = searchParams.get("month");
     let year = searchParams.get("year");
 
-    // Validate month (should be between 1-12)
     if (
       month &&
       (!/^\d+$/.test(month) || Number(month) < 1 || Number(month) > 12)
@@ -19,15 +17,13 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Validate year (should be a valid 4-digit number)
-    if (year && (!/^\d{4}$/.test(year) || Number(year) < 2000)) {
+    if (year && !/^\d{4}$/.test(year)) {
       return NextResponse.json(
         { message: "Invalid year value." },
         { status: 400 },
       );
     }
 
-    // Extract token from cookies
     const token = req.cookies.get("token")?.value;
     if (!token) {
       return NextResponse.json(
@@ -36,7 +32,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Construct API URL
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/filter`;
     const queryParams = new URLSearchParams();
 
@@ -45,7 +40,6 @@ export async function GET(req: NextRequest) {
 
     const apiUrl = `${baseUrl}?${queryParams.toString()}`;
 
-    // Fetch referrals from backend
     const response = await axios.get(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
     });

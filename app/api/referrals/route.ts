@@ -1,9 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    // Extract token from cookies
     const token = req.cookies.get("token")?.value;
     if (!token) {
       return NextResponse.json(
@@ -11,10 +10,9 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-    // Parse request body
+
     const data = await req.json();
 
-    // Validate required fields
     const { jobDetails, lastApplyDate, numberOfReferrals } = data;
 
     if (
@@ -32,13 +30,14 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
+
     if (typeof numberOfReferrals !== "number" || numberOfReferrals < 0) {
       return NextResponse.json(
         { message: "Number of referrals must be a non-negative number" },
         { status: 400 },
       );
     }
-    // URL validation
+
     const urlPattern = /^https?:\/\/\S+$/;
     if (!urlPattern.test(jobDetails.link)) {
       return NextResponse.json(
@@ -47,7 +46,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Date validation
     const applyDate = new Date(lastApplyDate);
     const currentDate = new Date();
     if (applyDate <= currentDate) {
@@ -57,7 +55,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Send data to backend API
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/referrals`,
       data,

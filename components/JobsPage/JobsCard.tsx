@@ -94,15 +94,12 @@ export default function JobsCard({ job }: { job: Job }) {
           <strong>Posted By:</strong>{" "}
           <Link
             href={`/profile/${job.postedBy.id}`}
-            className="flex items-center"
+            className="flex items-center ml-2 text-blue-500 hover:text-blue-600"
           >
             <span>
               {job.postedBy.name} ({job.postedBy.collegeEmail})
             </span>
-            <ExternalLink
-              size={20}
-              className="inline-block ml-2 text-blue-500"
-            />
+            <ExternalLink size={20} className="ml-1" />
           </Link>
         </div>
       </div>

@@ -31,7 +31,36 @@ interface UserProfileData {
   bio: string;
   collegeEmail: string;
   personalEmail: string;
+  role: "student" | "alumni";
   profiles: SocialMediaProfile[];
+  alumniDetails?: {
+    verified: boolean;
+    location: {
+      city: string;
+      country: string;
+    };
+    jobPosition: {
+      title: string;
+      type: string;
+      start: string;
+      end: string | null;
+      ongoing: boolean;
+      location: string;
+      jobType: string;
+      description: string;
+    }[];
+    education: {
+      school: string;
+      degree: string;
+      fieldOfStudy: string;
+      start: string;
+      end: string;
+      ongoing: boolean;
+      location: string;
+      description: string;
+    }[];
+    expertise: string[];
+  };
 }
 
 interface UserProfileProps {
@@ -76,6 +105,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       />
     );
   }
+  console.log("Data");
+  console.log(data);
 
   return (
     <div className="w-full max-w-[95%] mx-auto p-6 bg-white shadow-lg rounded-2xl flex flex-col space-y-6">
@@ -156,6 +187,68 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       <p className="text-gray-700 text-lg border-l-4 pl-4 border-blue-500">
         {data?.bio}
       </p>
+      {/*Alumni Details (Only if role is 'alumni' and verified is true) */}
+      {data.role === "alumni" && data.alumniDetails?.verified && (
+        <div className="space-y-4 border-t pt-4">
+          <h2 className="text-xl font-semibold">Alumni Details</h2>
+
+          <p className="text-lg font-semibold">
+            Location: {data.alumniDetails.location.city},{" "}
+            {data.alumniDetails.location.country}
+          </p>
+
+          {/* Job Positions */}
+          <div>
+            <p className="text-lg font-semibold">Job Positions:</p>
+            {data.alumniDetails.jobPosition.map((job, index) => (
+              <div
+                key={index}
+                className="pl-4 border-l-2 border-gray-300 space-y-1"
+              >
+                <p className="text-gray-700">
+                  {job.title} ({job.type})
+                </p>
+                <p className="text-gray-600">
+                  {job.location} | {job.jobType}
+                </p>
+                <p className="text-gray-500">
+                  {job.ongoing
+                    ? "Ongoing"
+                    : `${job.start.split("T")[0]} to ${job.end ? job.end.split("T")[0] : "Present"}`}
+                </p>
+                <p className="text-gray-500">{job.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Education */}
+          <div>
+            <p className="text-lg font-semibold">Education:</p>
+            {data.alumniDetails.education.map((edu, index) => (
+              <div
+                key={index}
+                className="pl-4 border-l-2 border-gray-300 space-y-1"
+              >
+                <p className="text-gray-700">
+                  {edu.school} - {edu.degree} in {edu.fieldOfStudy}
+                </p>
+                <p className="text-gray-600">{edu.location}</p>
+                <p className="text-gray-500">
+                  {edu.ongoing
+                    ? "Ongoing"
+                    : `${edu.start.split("T")[0]} to ${edu.end.split("T")[0]}`}
+                </p>
+                <p className="text-gray-500">{edu.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Expertise */}
+          <p className="text-gray-700">
+            Expertise: {data.alumniDetails.expertise?.join(", ") || "N/A"}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

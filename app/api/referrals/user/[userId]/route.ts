@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ userId: string }> } // Ensure params is awaited
+  context: { params: Promise<{ userId: string }> }, // Ensure params is awaited
 ) {
   try {
     // Await params before extracting userId
@@ -14,7 +14,7 @@ export async function GET(
     if (!token) {
       return NextResponse.json(
         { message: "Unauthorized. Please login to view referrals." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -25,14 +25,14 @@ export async function GET(
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
     console.error(
       "Error fetching user referrals:",
-      error?.response?.data || error.message
+      error?.response?.data || error.message,
     );
 
     return NextResponse.json(
@@ -41,7 +41,7 @@ export async function GET(
           error.response?.data?.message || "Failed to fetch user referrals",
         error: error.message,
       },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 500 },
     );
   }
 }

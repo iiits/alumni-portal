@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: Promise<{ id: string }> } // Ensure params is awaited
+  context: { params: Promise<{ id: string }> }, // Ensure params is awaited
 ) {
   try {
     // Await params before extracting id
@@ -14,7 +14,7 @@ export async function DELETE(
     if (!token) {
       return NextResponse.json(
         { message: "Unauthorized. Please login to delete a referral." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -25,14 +25,14 @@ export async function DELETE(
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
     console.error(
       "Error deleting referral:",
-      error?.response?.data || error.message
+      error?.response?.data || error.message,
     );
 
     return NextResponse.json(
@@ -40,7 +40,7 @@ export async function DELETE(
         message: error.response?.data?.message || "Failed to delete referral",
         error: error.message,
       },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 500 },
     );
   }
 }

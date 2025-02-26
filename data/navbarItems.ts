@@ -17,12 +17,12 @@ interface LoginSignupItem {
 
 export const loginSignup: LoginSignupItem[] = [
   {
-    href: "/login",
+    href: "/auth/login",
     text: "Login",
     variant: "outline",
   },
   {
-    href: "/signup",
+    href: "/auth/signup",
     text: "Sign Up",
     variant: "default",
   },
@@ -101,7 +101,7 @@ export const profileMenuItems: ProfileMenuItem[] = [
   },
   {
     title: "Logout",
-    href: "/logout",
+    href: "/auth/logout",
     description: "Sign out from your account",
   },
 ];

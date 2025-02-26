@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
+import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { toast } from "sonner";
 
 interface SignupFormData {
   name: string;
@@ -48,7 +48,7 @@ export function SignupForm() {
     onSuccess: () => {
       toast.success("Account created successfully. Please verify your email.");
       formRef.current?.reset();
-      router.push("/emailverificationalert");
+      router.push("/auth/emailverificationalert");
     },
     onError: (error: any) => {
       console.error("Signup failed:", error);
@@ -136,8 +136,8 @@ export function SignupForm() {
             <Input
               id="collegeEmail"
               name="collegeEmail"
-              placeholder="john.d22@iiits.in"
-              pattern="^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@iiits\.in$"
+              placeholder="john.d22@iiits.in / john.d@iiits.in (for faculty)"
+              pattern="^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@iiits\.in$|^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@iiits\.in$"
               type="email"
               required
             />
@@ -159,9 +159,9 @@ export function SignupForm() {
             <Input
               id="rollNumber"
               name="rollNumber"
-              placeholder="S20XX00X0XXX"
+              placeholder="S20XX00X0XXX / F20XX00X0XXX (for faculty)"
               type="text"
-              pattern="^S\d{11}$"
+              pattern="^S\d{11}$|^F\d{11}$"
               required
             />
           </LabelInputContainer>

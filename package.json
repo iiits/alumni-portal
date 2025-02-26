@@ -35,6 +35,7 @@
     "date-fns": "^4.1.0",
     "dotted-map": "^2.2.3",
     "framer-motion": "^11.16.4",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.469.0",
     "mini-svg-data-uri": "^1.4.4",
     "motion": "^11.18.2",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

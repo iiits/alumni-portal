@@ -10,16 +10,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { axiosInstance } from "@/lib/api/axios";
 import { useUserStore } from "@/lib/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import NoData from "../Commons/NoData";
 import Searching from "../Commons/Searching";
+import MyJobCard from "./MyJobCard";
 import { Job } from "./types";
 import EditJob from "./UpdateJob";
 
@@ -63,6 +61,12 @@ export default function MyJobs() {
     setEditDialogOpen(true);
   };
 
+  useEffect(() => {
+    if (!editDialogOpen) {
+      setSelectedJob(null);
+    }
+  }, [editDialogOpen]);
+
   const handleDeleteClick = (job: Job) => {
     setSelectedJob(job);
     setDeleteDialogOpen(true);
@@ -97,58 +101,15 @@ export default function MyJobs() {
   return (
     <div className="space-y-4">
       {jobs.map((job) => (
-        <div key={job.id} className="p-4 border rounded-lg shadow">
-          <div className="flex justify-between">
-            <h2 className="text-xl font-semibold">
-              {job.jobName} ({job.role})
-            </h2>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleEditClick(job)}
-                className="flex items-center gap-1"
-              >
-                <Pencil size={16} /> Edit
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => handleDeleteClick(job)}
-                className="flex items-center gap-1"
-              >
-                <Trash2 size={16} /> Delete
-              </Button>
-            </div>
-          </div>
-
-          <p className="text-gray-600">{job.company}</p>
-          <p className="text-gray-800 mt-2">{job.description}</p>
-
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Badge variant="secondary">{job.type}</Badge>
-            <Badge variant="secondary">{job.workType}</Badge>
-            {job.stipend && <Badge variant="outline">{job.stipend}</Badge>}
-          </div>
-
-          <div className="mt-3">
-            <p>
-              <strong>Requirements:</strong>{" "}
-              {job.eligibility.requirements.join(", ")}
-            </p>
-            <p>
-              <strong>Eligible Batches:</strong>{" "}
-              {job.eligibility.batch.join(", ")}
-            </p>
-            <p>
-              <strong>Last Apply Date:</strong>{" "}
-              {new Date(job.lastApplyDate).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
+        <MyJobCard
+          key={job.id}
+          job={job}
+          onEdit={handleEditClick}
+          onDelete={handleDeleteClick}
+        />
       ))}
 
-      {selectedJob && (
+      {selectedJob && editDialogOpen && (
         <EditJob
           job={selectedJob}
           isOpen={editDialogOpen}
@@ -163,7 +124,11 @@ export default function MyJobs() {
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the job
-              posting.
+              posting for{" "}
+              <strong>
+                {selectedJob?.jobName} ({selectedJob?.role})
+              </strong>
+              .
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

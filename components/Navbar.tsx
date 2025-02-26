@@ -51,7 +51,7 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full border-b relative z-[9999] flex-shrink-0">
+    <div className="w-full border-b relative flex-shrink-0">
       <div className="container mx-auto flex h-16 items-center justify-between max-w-[90vw]">
         {/* Left - Brand */}
         <div className="text-xl font-bold">IIITS</div>

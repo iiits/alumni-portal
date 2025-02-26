@@ -67,13 +67,43 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+    border-radius: var(--radius);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--secondary));
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground) / 0.5);
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--secondary));
+    scrollbar-arrow-color: transparent;
   }
 }

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
@@ -24,8 +24,6 @@ export async function GET(req: NextRequest) {
     if (type) queryParams.append("type", type);
 
     const apiUrl = `${baseUrl}${queryParams.toString() ? "?" + queryParams.toString() : ""}`;
-
-    console.log("Fetching events from:", apiUrl);
 
     const response = await axios.get(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },

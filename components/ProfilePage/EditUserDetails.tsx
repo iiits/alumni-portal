@@ -91,14 +91,17 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
   const addNewProfile = () => {
     setFormData((prev) => ({
       ...prev,
-      profiles: [...prev.profiles, { type: "linkedin", link: "", visibility: true }]
+      profiles: [
+        ...prev.profiles,
+        { type: "linkedin", link: "", visibility: true },
+      ],
     }));
   };
-  
+
   const removeProfile = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      profiles: prev.profiles.filter((_, i) => i !== index)
+      profiles: prev.profiles.filter((_, i) => i !== index),
     }));
   };
   const onSubmit = (e: React.FormEvent) => {
@@ -161,7 +164,9 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                     <label className="block font-semibold">Platform</label>
                     <select
                       value={profile.type}
-                      onChange={(e) => handleProfileChange(index, "type", e.target.value)}
+                      onChange={(e) =>
+                        handleProfileChange(index, "type", e.target.value)
+                      }
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="youtube">YouTube</option>
@@ -177,7 +182,9 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                     <label className="block font-semibold mt-2">Link</label>
                     <input
                       value={profile.link}
-                      onChange={(e) => handleProfileChange(index, "link", e.target.value)}
+                      onChange={(e) =>
+                        handleProfileChange(index, "link", e.target.value)
+                      }
                       className="w-full p-2 border rounded-md"
                     />
 
@@ -186,7 +193,11 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                         type="checkbox"
                         checked={profile.visibility}
                         onChange={(e) =>
-                          handleProfileChange(index, "visibility", e.target.checked ? "yes" : "no")
+                          handleProfileChange(
+                            index,
+                            "visibility",
+                            e.target.checked ? "yes" : "no",
+                          )
                         }
                       />
                       <span className="ml-2">Visible</span>

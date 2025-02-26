@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { axiosInstance } from "@/lib/api/axios";
+import { useUserStore } from "@/lib/store";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import NoData from "../Commons/NoData";
@@ -20,6 +21,8 @@ import MyJobs from "./MyJobs";
 import { Job, JobFilters } from "./types";
 
 export default function Jobs() {
+  const { user } = useUserStore();
+
   const [appliedFilters, setAppliedFilters] = useState<JobFilters>({
     month: "",
     year: "",
@@ -68,25 +71,33 @@ export default function Jobs() {
   return (
     <div className="px-4">
       <div className="flex justify-between items-center mb-4 pt-10">
-        <h2 className="text-lg font-semibold">Jobs</h2>
-        <CreateNew
-          isOpen={isDialogOpen}
-          setIsOpen={setIsDialogOpen}
-          refetch={refetch}
-        />
+        <h2 className="text-3xl sm:text-4xl font-semibold">Jobs</h2>
+        {(user?.role === "admin" || user?.role === "alumni") && (
+          <CreateNew
+            isOpen={isDialogOpen}
+            setIsOpen={setIsDialogOpen}
+            refetch={refetch}
+          />
+        )}
       </div>
 
       <Tabs defaultValue="all" className="w-[90vw] mx-auto pb-8">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="all">All Jobs</TabsTrigger>
-          <TabsTrigger value="mine">My Jobs</TabsTrigger>
+          <TabsTrigger value="all" className="text-lg">
+            All Jobs
+          </TabsTrigger>
+          <TabsTrigger value="mine" className="text-lg">
+            My Jobs
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">
           <Card>
             <CardHeader>
-              <CardTitle>All Jobs</CardTitle>
-              <CardDescription>Browse and filter job postings.</CardDescription>
+              <CardTitle className="text-2xl sm:text-3xl">All Jobs</CardTitle>
+              <CardDescription className="text-lg sm:text-xl">
+                Browse and filter job postings.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <JobsFilter
@@ -129,8 +140,10 @@ export default function Jobs() {
         <TabsContent value="mine">
           <Card>
             <CardHeader>
-              <CardTitle>My Jobs</CardTitle>
-              <CardDescription>Job postings you have created</CardDescription>
+              <CardTitle className="text-2xl sm:text-3xl">My Jobs</CardTitle>
+              <CardDescription className="text-lg sm:text-xl">
+                Job postings you have created
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <MyJobs />

@@ -108,15 +108,15 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
           location: "",
           jobType: "",
           description: "",
-        }
-      ]
+        },
+      ],
     }));
   };
-  
+
   const removeJob = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      jobPosition: prev.jobPosition.filter((_, i) => i !== index)
+      jobPosition: prev.jobPosition.filter((_, i) => i !== index),
     }));
   };
   const removeEducation = (index: number) => {
@@ -125,7 +125,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
       education: prev.education.filter((_, i) => i !== index),
     }));
   };
-  
+
   const addEducation = () => {
     setFormData((prev) => ({
       ...prev,
@@ -144,7 +144,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
       ],
     }));
   };
-  
+
   const addExpertise = () => {
     if (newExpertise.trim() !== "") {
       setFormData({
@@ -204,7 +204,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={job.title}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "title", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "title",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -214,7 +219,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={job.type}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "type", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "type",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -224,7 +234,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={job.location}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "location", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "location",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -234,7 +249,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={job.jobType}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "jobType", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "jobType",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -243,23 +263,42 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <label className="block font-semibold mt-2">Start Date</label>
                   <input
                     type="date"
-                    value={job.start ? new Date(job.start).toISOString().split("T")[0] : ""}
+                    value={
+                      job.start
+                        ? new Date(job.start).toISOString().split("T")[0]
+                        : ""
+                    }
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "start", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "start",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
 
-
                   {/* End Date (Hidden if ongoing) */}
                   {!job.ongoing && (
                     <>
-                      <label className="block font-semibold mt-2">End Date</label>
+                      <label className="block font-semibold mt-2">
+                        End Date
+                      </label>
                       <input
                         type="date"
-                        value={job.end ? new Date(job.end).toISOString().split("T")[0] : ""}
+                        value={
+                          job.end
+                            ? new Date(job.end).toISOString().split("T")[0]
+                            : ""
+                        }
                         onChange={(e) =>
-                          handleArrayChange("jobPosition", index, "end", e.target.value)
+                          handleArrayChange(
+                            "jobPosition",
+                            index,
+                            "end",
+                            e.target.value,
+                          )
                         }
                         className="w-full p-2 border rounded-md"
                       />
@@ -272,18 +311,30 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                       type="checkbox"
                       checked={job.ongoing}
                       onChange={(e) =>
-                        handleArrayChange("jobPosition", index, "ongoing", e.target.checked)
+                        handleArrayChange(
+                          "jobPosition",
+                          index,
+                          "ongoing",
+                          e.target.checked,
+                        )
                       }
                     />
                     <span className="ml-2">Ongoing</span>
                   </label>
 
                   {/* Job Description */}
-                  <label className="block font-semibold mt-2">Job Description</label>
+                  <label className="block font-semibold mt-2">
+                    Job Description
+                  </label>
                   <textarea
                     value={job.description}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "description", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "description",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -311,13 +362,21 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
               {/* Education */}
               <h3 className="font-semibold">Education</h3>
               {formData.education.map((edu, index) => (
-                <div key={index} className="p-4 bg-gray-100 rounded-md space-y-2">
+                <div
+                  key={index}
+                  className="p-4 bg-gray-100 rounded-md space-y-2"
+                >
                   {/* School */}
                   <label className="block font-semibold">School</label>
                   <input
                     value={edu.school}
                     onChange={(e) =>
-                      handleArrayChange("education", index, "school", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "school",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -327,7 +386,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={edu.degree}
                     onChange={(e) =>
-                      handleArrayChange("education", index, "degree", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "degree",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -337,7 +401,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={edu.fieldOfStudy}
                     onChange={(e) =>
-                      handleArrayChange("education", index, "fieldOfStudy", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "fieldOfStudy",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -346,9 +415,18 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <label className="block font-semibold">Start Date</label>
                   <input
                     type="date"
-                    value={edu.start ? new Date(edu.start).toISOString().split("T")[0] : ""}
+                    value={
+                      edu.start
+                        ? new Date(edu.start).toISOString().split("T")[0]
+                        : ""
+                    }
                     onChange={(e) =>
-                      handleArrayChange("education", index, "start", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "start",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -357,9 +435,18 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <label className="block font-semibold">End Date</label>
                   <input
                     type="date"
-                    value={edu.end ? new Date(edu.end).toISOString().split("T")[0] : ""}
+                    value={
+                      edu.end
+                        ? new Date(edu.end).toISOString().split("T")[0]
+                        : ""
+                    }
                     onChange={(e) =>
-                      handleArrayChange("education", index, "end", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "end",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                     disabled={edu.ongoing} // Disable end date if ongoing
@@ -371,7 +458,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                       type="checkbox"
                       checked={edu.ongoing}
                       onChange={(e) =>
-                        handleArrayChange("education", index, "ongoing", e.target.checked)
+                        handleArrayChange(
+                          "education",
+                          index,
+                          "ongoing",
+                          e.target.checked,
+                        )
                       }
                     />
                     <span>Ongoing</span>
@@ -382,7 +474,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <input
                     value={edu.location}
                     onChange={(e) =>
-                      handleArrayChange("education", index, "location", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "location",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
@@ -392,23 +489,33 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <textarea
                     value={edu.description}
                     onChange={(e) =>
-                      handleArrayChange("education", index, "description", e.target.value)
+                      handleArrayChange(
+                        "education",
+                        index,
+                        "description",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md"
                   />
 
                   {/* Remove Button */}
-                  <button onClick={() => removeEducation(index)} className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md">
+                  <button
+                    onClick={() => removeEducation(index)}
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                  >
                     Remove Education
                   </button>
                 </div>
               ))}
 
               {/* Add New Education Button */}
-              <button onClick={addEducation} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">
+              <button
+                onClick={addEducation}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+              >
                 Add New Education
               </button>
-
 
               {/* Expertise */}
               <div>

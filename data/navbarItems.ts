@@ -86,3 +86,22 @@ export const navbarItems: NavbarItem[] = [
     ],
   },
 ];
+
+export interface ProfileMenuItem {
+  title: string;
+  href: string;
+  description: string;
+}
+
+export const profileMenuItems: ProfileMenuItem[] = [
+  {
+    title: "Profile",
+    href: "/profile/me",
+    description: "View and edit your profile information",
+  },
+  {
+    title: "Logout",
+    href: "/logout",
+    description: "Sign out from your account",
+  },
+];

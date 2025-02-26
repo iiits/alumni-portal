@@ -13,11 +13,13 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { loginSignup, navbarItems } from "@/data/navbarItems";
+import { loginSignup, navbarItems, profileMenuItems } from "@/data/navbarItems";
+import { useUserStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const ListItem = React.forwardRef<
   React.ElementRef<typeof Link>,
@@ -50,11 +52,16 @@ ListItem.displayName = "ListItem";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const { user, token } = useUserStore();
+  const isLoggedIn = !!token;
+
   return (
     <div className="w-full border-b relative flex-shrink-0">
       <div className="container mx-auto flex h-16 items-center justify-between max-w-[90vw]">
         {/* Left - Brand */}
-        <div className="text-xl font-bold">IIITS</div>
+        <Link href="/" className="text-xl font-bold">
+          IIITS
+        </Link>
 
         {/* Mobile Menu Button */}
         <div className="sm:hidden">
@@ -68,7 +75,9 @@ export function Navbar() {
               <div className="flex h-full flex-col">
                 {/* Sheet Header */}
                 <div className="border-b pb-4">
-                  <h2 className="text-lg font-semibold">IIITS</h2>
+                  <Link href="/" className="text-lg font-semibold">
+                    IIITS
+                  </Link>
                 </div>
 
                 {/* Scrollable Content */}
@@ -105,12 +114,22 @@ export function Navbar() {
 
                 {/* Sheet Footer */}
                 <div className="border-t pt-4">
-                  <div className="flex flex-col gap-2 text-lg">
-                    {loginSignup.map((item) => (
-                      <Link key={item.href} href={item.href} passHref>
-                        <Button variant={item.variant}>{item.text}</Button>
-                      </Link>
-                    ))}
+                  <div className="flex gap-2 text-lg">
+                    {isLoggedIn ? (
+                      <>
+                        {profileMenuItems.map((item) => (
+                          <Button key={item.title} variant="outline" asChild>
+                            <Link href={item.href}>{item.title}</Link>
+                          </Button>
+                        ))}
+                      </>
+                    ) : (
+                      loginSignup.map((item) => (
+                        <Link key={item.href} href={item.href} passHref>
+                          <Button variant={item.variant}>{item.text}</Button>
+                        </Link>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
@@ -156,11 +175,39 @@ export function Navbar() {
 
         {/* Desktop - Auth Buttons */}
         <div className="hidden items-center gap-2 sm:flex">
-          {loginSignup.map((item) => (
-            <Link key={item.href} href={item.href} passHref>
-              <Button variant={item.variant}>{item.text}</Button>
-            </Link>
-          ))}
+          {isLoggedIn ? (
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="h-8 w-8 rounded-full">
+                    <Avatar>
+                      <AvatarImage src={user?.profilePicture || ""} />
+                      <AvatarFallback>{user?.name?.[0] || "U"}</AvatarFallback>
+                    </Avatar>
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[300px] gap-2 p-4">
+                      {profileMenuItems.map((item) => (
+                        <ListItem
+                          key={item.href}
+                          title={item.title}
+                          href={item.href}
+                        >
+                          {item.description}
+                        </ListItem>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          ) : (
+            loginSignup.map((item) => (
+              <Link key={item.href} href={item.href} passHref>
+                <Button variant={item.variant}>{item.text}</Button>
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -33,10 +33,12 @@ export async function POST(req: NextRequest) {
       !role ||
       !description ||
       !type ||
+      !stipend ||
+      !duration ||
       !workType ||
       !links ||
       !lastApplyDate ||
-      !eligibility ||
+      !eligibility.requirements ||
       !eligibility.batch
     ) {
       return NextResponse.json(
@@ -60,6 +62,17 @@ export async function POST(req: NextRequest) {
     if (!["onsite", "remote", "hybrid"].includes(workType)) {
       return NextResponse.json(
         { message: "WorkType must be either 'onsite', 'remote', or 'hybrid'" },
+        { status: 400 },
+      );
+    }
+
+    // Requirements validation
+    if (
+      !Array.isArray(eligibility.requirements) ||
+      eligibility.requirements.length === 0
+    ) {
+      return NextResponse.json(
+        { message: "Eligibility requirements must be a non-empty array" },
         { status: 400 },
       );
     }

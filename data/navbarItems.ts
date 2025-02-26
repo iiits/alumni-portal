@@ -2,6 +2,8 @@ export interface NavbarItem {
   id: string;
   title: string;
   route?: string;
+  description?: string;
+  showImage?: boolean;
   dropdownItems?: Array<{
     title: string;
     href: string;
@@ -35,53 +37,47 @@ export const navbarItems: NavbarItem[] = [
     route: "/",
   },
   {
-    id: "verification",
-    title: "Alumni Verification",
-    route: "/alumnidetails",
-  },
-  {
-    id: "faqs",
-    title: "FAQs",
-    route: "#faqs",
-  },
-  {
-    id: "pages",
-    title: "Pages",
+    id: "interact",
+    title: "Interact",
+    description:
+      "Connect with alumni & college through various channels and opportunities",
+    showImage: true,
     dropdownItems: [
       {
-        title: "Alert Dialog",
-        href: "/docs/primitives/alert-dialog",
+        title: "Events",
+        href: "/events",
         description:
-          "A modal dialog that interrupts the user with important content and expects a response.",
+          "View and register for upcoming events and view past events.",
       },
       {
-        title: "Hover Card",
-        href: "/docs/primitives/hover-card",
+        title: "Referrals",
+        href: "/referrals",
         description:
-          "For sighted users to preview content available behind a link.",
+          "View and manage your referrals and view referral statistics.",
       },
       {
-        title: "Progress",
-        href: "/docs/primitives/progress",
+        title: "Jobs",
+        href: "/jobs",
         description:
-          "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+          "View and apply for job openings and view past job applications.",
+      },
+    ],
+  },
+  {
+    id: "other pages",
+    title: "Other Pages",
+    dropdownItems: [
+      {
+        title: "Contact Us",
+        href: "/contactus",
+        description:
+          "Contact us for any queries or feedback. We're here to help!",
       },
       {
-        title: "Scroll-area",
-        href: "/docs/primitives/scroll-area",
-        description: "Visually or semantically separates content.",
-      },
-      {
-        title: "Tabs",
-        href: "/docs/primitives/tabs",
+        title: "FAQs",
+        href: "/faqs",
         description:
-          "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-      },
-      {
-        title: "Tooltip",
-        href: "/docs/primitives/tooltip",
-        description:
-          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+          "Frequently Asked Questions about the Platform and its features.",
       },
     ],
   },

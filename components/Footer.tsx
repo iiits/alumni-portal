@@ -42,16 +42,29 @@ export function Footer() {
             </div>
           </div>
           <div className="flex gap-4">
-            {footerItems.socialLinks.map((link) => {
+            {footerItems.socialLinks.map((link, _, array) => {
               const Icon = iconMap[link.icon as keyof typeof iconMap];
+              const sameLabels = array.filter(
+                (item) => item.label === link.label,
+              );
+              const labelIndex =
+                sameLabels.length > 1 ? sameLabels.indexOf(link) + 1 : null;
+
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground relative"
                   prefetch={false}
-                  aria-label={link.label}
+                  aria-label={
+                    labelIndex ? `${link.label} ${labelIndex}` : link.label
+                  }
                 >
+                  {labelIndex && (
+                    <span className="absolute -top-3 -right-1 text-xs">
+                      {labelIndex}
+                    </span>
+                  )}
                   <Icon className="h-6 w-6 xl:h-7 xl:w-7" />
                 </Link>
               );
@@ -61,7 +74,7 @@ export function Footer() {
 
         {/* Middle Section - Quick Links & Resources */}
         <div className="flex flex-col sm:flex-row w-full lg:w-1/2 gap-8 justify-start lg:justify-around">
-          <div className="grid gap-2 w-full sm:w-1/3">
+          <div className="flex flex-col gap-2 w-full sm:w-1/3">
             <h4 className="text-xl font-medium">Quick Links</h4>
             {footerItems.quickLinks.map((link) => (
               <Link
@@ -75,7 +88,7 @@ export function Footer() {
             ))}
           </div>
 
-          <div className="grid gap-2 w-full sm:w-1/3">
+          <div className="flex flex-col gap-2 w-full sm:w-1/3">
             <h4 className="text-xl font-medium">Resources</h4>
             {footerItems.resources.map((link) => (
               <Link

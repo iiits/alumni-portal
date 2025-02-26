@@ -16,7 +16,7 @@ export const handleLogout = async () => {
     localStorage.removeItem("user-storage");
 
     // Refresh the page to ensure clean state
-    window.location.href = "/login";
+    window.location.href = "/auth/login";
   } catch (error) {
     console.error("Logout failed:", error);
     throw error;

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
 
     // Validate required fields
-    const { jobDetails, lastApplyDate } = data;
+    const { jobDetails, lastApplyDate, numberOfReferrals } = data;
 
     if (
       !jobDetails ||
@@ -24,14 +24,20 @@ export async function POST(req: NextRequest) {
       !jobDetails.company ||
       !jobDetails.role ||
       !jobDetails.link ||
-      !lastApplyDate
+      !lastApplyDate ||
+      numberOfReferrals === undefined
     ) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 },
       );
     }
-
+    if (typeof numberOfReferrals !== "number" || numberOfReferrals < 0) {
+      return NextResponse.json(
+        { message: "Number of referrals must be a non-negative number" },
+        { status: 400 },
+      );
+    }
     // URL validation
     const urlPattern = /^https?:\/\/\S+$/;
     if (!urlPattern.test(jobDetails.link)) {

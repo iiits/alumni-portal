@@ -82,9 +82,25 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
   ) => {
     const updatedProfiles = [...formData.profiles];
     updatedProfiles[index] = { ...updatedProfiles[index], [key]: value };
-    setFormData({ ...formData, profiles: updatedProfiles });
+    setFormData((prev) => {
+      const updatedProfiles = [...prev.profiles];
+      updatedProfiles[index] = { ...updatedProfiles[index], [key]: value };
+      return { ...prev, profiles: updatedProfiles };
+    });
   };
-
+  const addNewProfile = () => {
+    setFormData((prev) => ({
+      ...prev,
+      profiles: [...prev.profiles, { type: "linkedin", link: "", visibility: true }]
+    }));
+  };
+  
+  const removeProfile = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      profiles: prev.profiles.filter((_, i) => i !== index)
+    }));
+  };
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutation.mutate(formData);
@@ -139,14 +155,13 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
               </div>
               <div>
                 <h3 className="font-semibold">Social Profiles</h3>
+
                 {formData.profiles.map((profile, index) => (
                   <div key={index} className="mt-2 p-4 bg-gray-100 rounded-md">
                     <label className="block font-semibold">Platform</label>
                     <select
                       value={profile.type}
-                      onChange={(e) =>
-                        handleProfileChange(index, "type", e.target.value)
-                      }
+                      onChange={(e) => handleProfileChange(index, "type", e.target.value)}
                       className="w-full p-2 border rounded-md"
                     >
                       <option value="youtube">YouTube</option>
@@ -158,31 +173,46 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                       <option value="discord">Discord</option>
                       <option value="github">GitHub</option>
                     </select>
+
                     <label className="block font-semibold mt-2">Link</label>
                     <input
                       value={profile.link}
-                      onChange={(e) =>
-                        handleProfileChange(index, "link", e.target.value)
-                      }
+                      onChange={(e) => handleProfileChange(index, "link", e.target.value)}
                       className="w-full p-2 border rounded-md"
                     />
+
                     <label className="flex items-center mt-2">
                       <input
                         type="checkbox"
                         checked={profile.visibility}
                         onChange={(e) =>
-                          handleProfileChange(
-                            index,
-                            "visibility",
-                            e.target.checked,
-                          )
+                          handleProfileChange(index, "visibility", e.target.checked ? "yes" : "no")
                         }
                       />
                       <span className="ml-2">Visible</span>
                     </label>
+
+                    {/* Delete Button */}
+                    <button
+                      type="button"
+                      onClick={() => removeProfile(index)}
+                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    >
+                      Remove
+                    </button>
                   </div>
                 ))}
+
+                {/* Add New Profile Button */}
+                <button
+                  type="button"
+                  onClick={addNewProfile}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                  + Add Social Profile
+                </button>
               </div>
+
               <ModalFooter>
                 <button
                   type="submit"

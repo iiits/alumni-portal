@@ -74,7 +74,7 @@ interface UserProfileData {
   collegeEmail: string;
   personalEmail: string;
   profiles: SocialMediaProfile[];
-  role: string;
+  role: "student" | "alumni";
   alumniDetails?: AlumniDetails;
 }
 

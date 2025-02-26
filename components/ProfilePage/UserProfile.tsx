@@ -31,7 +31,6 @@ interface UserProfileData {
   bio: string;
   collegeEmail: string;
   personalEmail: string;
-  role: "student" | "alumni";
   profiles: SocialMediaProfile[];
   alumniDetails?: {
     verified: boolean;
@@ -188,7 +187,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         {data?.bio}
       </p>
       {/*Alumni Details (Only if role is 'alumni' and verified is true) */}
-      {data.role === "alumni" && data.alumniDetails?.verified && (
+      {data.alumniDetails && data.alumniDetails?.verified && (
         <div className="space-y-4 border-t pt-4">
           <h2 className="text-xl font-semibold">Alumni Details</h2>
 

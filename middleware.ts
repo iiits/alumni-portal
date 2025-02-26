@@ -11,16 +11,16 @@ export async function middleware(request: NextRequest) {
 
   const unProtectedRoutes = [
     "/",
-    "/login",
-    "/signup",
-    "/faq",
-    "/contactus",
-    "/verifyemail",
-    "/alumnidetails",
-    "/emailverificationalert",
+    "/auth/login",
+    "/auth/signup",
+    "/auth/logout",
+    "/auth/verifyemail",
+    "/auth/emailverificationalert",
     "/api/auth/verifyemail",
     "/api/auth/login",
     "/api/auth/signup",
+    "/faq",
+    "/contactus",
     "/api/contactus",
   ];
 
@@ -44,12 +44,12 @@ export async function middleware(request: NextRequest) {
     const data = await response.json();
 
     if (!data.success) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/auth/login", request.url));
     }
 
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 }
 

@@ -17,12 +17,12 @@ interface LoginSignupItem {
 
 export const loginSignup: LoginSignupItem[] = [
   {
-    href: "/login",
+    href: "/auth/login",
     text: "Login",
     variant: "outline",
   },
   {
-    href: "/signup",
+    href: "/auth/signup",
     text: "Sign Up",
     variant: "default",
   },
@@ -84,5 +84,24 @@ export const navbarItems: NavbarItem[] = [
           "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
       },
     ],
+  },
+];
+
+export interface ProfileMenuItem {
+  title: string;
+  href: string;
+  description: string;
+}
+
+export const profileMenuItems: ProfileMenuItem[] = [
+  {
+    title: "Profile",
+    href: "/profile/me",
+    description: "View and edit your profile information",
+  },
+  {
+    title: "Logout",
+    href: "/auth/logout",
+    description: "Sign out from your account",
   },
 ];

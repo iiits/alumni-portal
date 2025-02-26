@@ -59,6 +59,11 @@ export const footerItems: FooterData = {
       href: "https://github.com/iiits/alumni-portal",
       label: "GitHub",
     },
+    {
+      icon: "Github",
+      href: "https://github.com/iiits/alumni-portal-backend",
+      label: "GitHub",
+    },
   ],
   quickLinks: [
     {

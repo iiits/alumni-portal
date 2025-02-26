@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
+import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { toast } from "sonner";
 
 interface LoginFormData {
   identifier: string;
@@ -38,8 +38,8 @@ export default function LoginForm() {
       // Reset form
       formRef.current?.reset();
 
-      // Redirect to Home
-      router.replace("/");
+      // Redirect to profile page
+      router.replace("/profile/me");
     },
     onError: (error: any) => {
       console.error("Login failed:", error);

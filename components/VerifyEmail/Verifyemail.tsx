@@ -20,7 +20,7 @@ export default function VerifyEmail() {
     },
     onSuccess: () => {
       toast.success("Email verified successfully! Redirecting to login...");
-      setTimeout(() => router.push("/login"), 3000);
+      setTimeout(() => router.push("/auth/login"), 3000);
     },
     onError: () => {
       toast.error("Error verifying email. Please try again later.");
@@ -49,7 +49,7 @@ export default function VerifyEmail() {
       verifyMutation.mutate(token);
     } else {
       toast.warning("No token found. Redirecting to login...");
-      router.push("/login");
+      router.push("/auth/login");
     }
   }, [token]);
 

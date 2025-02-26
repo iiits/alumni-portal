@@ -16,6 +16,7 @@ import Searching from "../Commons/Searching";
 import CreateNew from "./CreateNew";
 import JobsCard from "./JobsCard";
 import JobsFilter from "./JobsFilter";
+import MyJobs from "./MyJobs";
 import { Job, JobFilters } from "./types";
 
 export default function Jobs() {
@@ -75,7 +76,7 @@ export default function Jobs() {
         />
       </div>
 
-      <Tabs defaultValue="all" className="min-w-full max-w-[90vw] mx-auto pb-8">
+      <Tabs defaultValue="all" className="w-[90vw] mx-auto pb-8">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="all">All Jobs</TabsTrigger>
           <TabsTrigger value="mine">My Jobs</TabsTrigger>
@@ -129,14 +130,10 @@ export default function Jobs() {
           <Card>
             <CardHeader>
               <CardTitle>My Jobs</CardTitle>
-              <CardDescription>
-                Your posted jobs will appear here.
-              </CardDescription>
+              <CardDescription>Job postings you have created</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-500">
-                This section is under development.
-              </p>
+              <MyJobs />
             </CardContent>
           </Card>
         </TabsContent>

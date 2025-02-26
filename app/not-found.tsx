@@ -7,7 +7,7 @@ export default function NotFound() {
     <div className="h-screen w-full flex flex-col items-center justify-center bg-white">
       <div className="container px-4 flex flex-col items-center">
         {/* Error Code */}
-        <Image src={"/404.svg"} alt="404" width={400} height={400} />
+        <Image src={"/gifs/404.gif"} alt="404" width={500} height={500} />
 
         {/* Description */}
         <div className="mt-8 text-center">

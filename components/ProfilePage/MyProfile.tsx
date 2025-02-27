@@ -6,6 +6,7 @@ import { axiosInstance } from "@/lib/api/axios";
 import { useUserStore } from "@/lib/store";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   SiX,
   SiInstagram,
@@ -101,6 +102,7 @@ const MyProfile: React.FC = () => {
   const id = useUserStore((state) => state.user?.id);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isAlumniModalOpen, setIsAlumniModalOpen] = useState(false);
+  const router = useRouter();
 
   const { data, error, isLoading } = useQuery<UserProfileData>({
     queryKey: ["myProfile"],
@@ -148,28 +150,35 @@ const MyProfile: React.FC = () => {
       </div>
       {/* Username */}
       <h3 className="text-3xl font-semibold">a.k.a. {data?.username}</h3>
-      {/* Edit Profile Button */}
-      <ModalProvider>
-        <EditUserDetails
-          userData={{
-            id: id || "",
-            name: data.name,
-            personalEmail: data.personalEmail,
-            username: data.username,
-            profiles: data.profiles.map((profile) => ({
-              type: profile.type,
-              link: profile.link,
-              visibility: profile.visibility === "yes",
-            })),
-            bio: data.bio,
-          }}
-        />
-      </ModalProvider>
-      {data.role === "student" && (
-        <button className="px-4 py-2 bg-black text-white rounded-lg">
-          Register as Alumni
-        </button>
-      )}
+      {/* Edit Profile Button and Register as alumni Button */}
+      <div className="flex items-center gap-4">
+        <ModalProvider>
+          <EditUserDetails
+            userData={{
+              id: id || "",
+              name: data.name,
+              personalEmail: data.personalEmail,
+              username: data.username,
+              profiles: data.profiles.map((profile) => ({
+                type: profile.type,
+                link: profile.link,
+                visibility: profile.visibility === "yes",
+              })),
+              bio: data.bio,
+            }}
+          />
+        </ModalProvider>
+
+        {data.role === "student" && (
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            onClick={() => router.push("/alumnidetails")}
+          >
+            Register as Alumni
+          </button>
+        )}
+      </div>
+
       {/* Social Media Links */}
       <div className="flex space-x-4">
         {data?.profiles &&

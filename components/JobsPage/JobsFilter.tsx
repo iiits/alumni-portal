@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/select";
 import { MultiSelect } from "../ui/multi-select";
 import { JobFilters } from "./types";
+import {toast} from 'sonner';
 
 interface JobsFilterProps {
   filters: JobFilters;
@@ -16,12 +17,20 @@ interface JobsFilterProps {
   isChanged: boolean;
 }
 
+
 export default function JobsFilter({
   filters,
   setFilters,
   onFilterChange,
   isChanged,
 }: JobsFilterProps) {
+  const handleFilterChange = () => {
+    if (filters.month !== "" && filters.year === "") {
+      toast.warning("Please select a year for correct filtering");
+      return;
+    }
+    onFilterChange();
+  };
   const updateFilter = <K extends keyof JobFilters>(
     key: K,
     value: JobFilters[K],
@@ -122,7 +131,7 @@ export default function JobsFilter({
         />
       </div>
 
-      <Button onClick={onFilterChange} disabled={!isChanged}>
+      <Button onClick={handleFilterChange} disabled={!isChanged}>
         Apply Filters
       </Button>
     </div>

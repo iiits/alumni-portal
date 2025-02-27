@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ReferralFilters } from "./types";
+import { toast } from "sonner";
 
 interface ReferralFilterProps {
   filters: ReferralFilters;
@@ -21,6 +22,13 @@ export default function ReferralFilter({
   onFilterChange,
   isChanged,
 }: ReferralFilterProps) {
+  const handleFilterChange = () => {
+    if (filters.month !== "" && filters.year === "") {
+      toast.warning("Please select a year for correct filtering");
+      return;
+    }
+    onFilterChange();
+  };
   const updateFilter = <K extends keyof ReferralFilters>(
     key: K,
     value: ReferralFilters[K],
@@ -71,7 +79,7 @@ export default function ReferralFilter({
         </SelectContent>
       </Select>
 
-      <Button onClick={onFilterChange} disabled={!isChanged}>
+      <Button onClick={handleFilterChange} disabled={!isChanged}>
         Apply Filters
       </Button>
     </div>

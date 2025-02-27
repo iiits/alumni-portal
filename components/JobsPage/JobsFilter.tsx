@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { MultiSelect } from "../ui/multi-select";
 import { JobFilters } from "./types";
-import {toast} from 'sonner';
+import { toast } from "sonner";
 
 interface JobsFilterProps {
   filters: JobFilters;
@@ -16,7 +16,6 @@ interface JobsFilterProps {
   onFilterChange: () => void;
   isChanged: boolean;
 }
-
 
 export default function JobsFilter({
   filters,

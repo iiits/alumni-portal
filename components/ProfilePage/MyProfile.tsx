@@ -204,91 +204,92 @@ const MyProfile: React.FC = () => {
       </p>
 
       {/* Alumni Details */}
-      {(data.role === "alumni" || data.role === "admin") && data.alumniDetails && (
-        <div className="space-y-4 border-t pt-4">
-          {data.alumniDetails.verified === false && (
-            <p className="text-yellow-600 font-semibold">
-              Alumni details verification in progress
-            </p>
-          )}
-          <ModalProvider>
-            <EditAlumniDetails
-              alumniData={{
-                id: data.alumniDetails.id || "",
-                location: {
-                  city: data.alumniDetails.location.city || "",
-                  country: data.alumniDetails.location.country || "",
-                },
-                jobPosition: data.alumniDetails.jobPosition.map((job) => ({
-                  title: job.title,
-                  type: job.type,
-                  start: job.start,
-                  end: job.end || null,
-                  ongoing: job.ongoing,
-                  location: job.location,
-                  jobType: job.jobType,
-                  description: job.description,
-                })),
-                education: data.alumniDetails.education.map((edu) => ({
-                  school: edu.school,
-                  degree: edu.degree,
-                  fieldOfStudy: edu.fieldOfStudy,
-                  start: edu.start,
-                  end: edu.end,
-                  ongoing: edu.ongoing,
-                  location: edu.location,
-                  description: edu.description,
-                })),
-                expertise: data.alumniDetails.expertise || [],
-              }}
-            />
-          </ModalProvider>
+      {(data.role === "alumni" || data.role === "admin") &&
+        data.alumniDetails && (
+          <div className="space-y-4 border-t pt-4">
+            {data.alumniDetails.verified === false && (
+              <p className="text-yellow-600 font-semibold">
+                Alumni details verification in progress
+              </p>
+            )}
+            <ModalProvider>
+              <EditAlumniDetails
+                alumniData={{
+                  id: data.alumniDetails.id || "",
+                  location: {
+                    city: data.alumniDetails.location.city || "",
+                    country: data.alumniDetails.location.country || "",
+                  },
+                  jobPosition: data.alumniDetails.jobPosition.map((job) => ({
+                    title: job.title,
+                    type: job.type,
+                    start: job.start,
+                    end: job.end || null,
+                    ongoing: job.ongoing,
+                    location: job.location,
+                    jobType: job.jobType,
+                    description: job.description,
+                  })),
+                  education: data.alumniDetails.education.map((edu) => ({
+                    school: edu.school,
+                    degree: edu.degree,
+                    fieldOfStudy: edu.fieldOfStudy,
+                    start: edu.start,
+                    end: edu.end,
+                    ongoing: edu.ongoing,
+                    location: edu.location,
+                    description: edu.description,
+                  })),
+                  expertise: data.alumniDetails.expertise || [],
+                }}
+              />
+            </ModalProvider>
 
-          <p className="text-lg font-semibold">
-            Location: {data.alumniDetails.location.city},{" "}
-            {data.alumniDetails.location.country}
-          </p>
-          <div>
-            <p className="text-lg font-semibold">Job Positions:</p>
-            {data.alumniDetails.jobPosition.map((job, index) => (
-              <div key={index} className="pl-4 border-l-2 border-gray-300">
-                <p className="text-gray-700">
-                  {job.title} ({job.type})
-                </p>
-                <p className="text-gray-600">
-                  {job.location} | {job.jobType}
-                </p>
-                <p className="text-gray-500">
-                  {job.ongoing
-                    ? "Ongoing"
-                    : `${job.start.split("T")[0]} to ${job.end ? job.end.split("T")[0] : "Present"}`}
-                </p>
-                <p className="text-gray-500">{job.description}</p>
-              </div>
-            ))}
+            <p className="text-lg font-semibold">
+              Location: {data.alumniDetails.location.city},{" "}
+              {data.alumniDetails.location.country}
+            </p>
+            <div>
+              <p className="text-lg font-semibold">Job Positions:</p>
+              {data.alumniDetails.jobPosition.map((job, index) => (
+                <div key={index} className="pl-4 border-l-2 border-gray-300">
+                  <p className="text-gray-700">
+                    {job.title} ({job.type})
+                  </p>
+                  <p className="text-gray-600">
+                    {job.location} | {job.jobType}
+                  </p>
+                  <p className="text-gray-500">
+                    {job.ongoing
+                      ? "Ongoing"
+                      : `${job.start.split("T")[0]} to ${job.end ? job.end.split("T")[0] : "Present"}`}
+                  </p>
+                  <p className="text-gray-500">{job.description}</p>
+                </div>
+              ))}
+            </div>
+            <div>
+              <p className="text-lg font-semibold">Education:</p>
+              {data.alumniDetails.education.map((edu, index) => (
+                <div key={index} className="pl-4 border-l-2 border-gray-300">
+                  <p className="text-gray-700">
+                    {edu.school} - {edu.degree} in {edu.fieldOfStudy}
+                  </p>
+                  <p className="text-gray-600">{edu.location}</p>
+                  <p className="text-gray-500">
+                    {edu.ongoing
+                      ? "Ongoing"
+                      : `${edu.start.split("T")[0]} to ${edu.end.split("T")[0]}`}
+                  </p>
+                  <p className="text-gray-500">{edu.description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-gray-700">
+              Expertise: {data.alumniDetails.expertise?.join(", ") || "N/A"}
+            </p>
           </div>
-          <div>
-            <p className="text-lg font-semibold">Education:</p>
-            {data.alumniDetails.education.map((edu, index) => (
-              <div key={index} className="pl-4 border-l-2 border-gray-300">
-                <p className="text-gray-700">
-                  {edu.school} - {edu.degree} in {edu.fieldOfStudy}
-                </p>
-                <p className="text-gray-600">{edu.location}</p>
-                <p className="text-gray-500">
-                  {edu.ongoing
-                    ? "Ongoing"
-                    : `${edu.start.split("T")[0]} to ${edu.end.split("T")[0]}`}
-                </p>
-                <p className="text-gray-500">{edu.description}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-gray-700">
-            Expertise: {data.alumniDetails.expertise?.join(", ") || "N/A"}
-          </p>
-        </div>
-      )}
+        )}
     </div>
   );
 };

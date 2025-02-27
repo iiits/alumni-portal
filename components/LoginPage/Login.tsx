@@ -38,6 +38,8 @@ export default function LoginForm() {
       // Reset form
       formRef.current?.reset();
 
+      // forceful page refresh
+      router.refresh();
       // Redirect to profile page
       router.replace("/profile/me");
     },

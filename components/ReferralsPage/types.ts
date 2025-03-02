@@ -31,3 +31,22 @@ export interface ReferralFilters {
   month: number | "";
   year: number | "";
 }
+
+export interface Submission {
+  referralId: {
+    jobDetails: JobDetails;
+    id: string;
+  };
+  userId: {
+    name: string;
+    collegeEmail: string;
+    personalEmail: string;
+    id: string;
+  };
+  resumeLink: string;
+  coverLetter: string;
+  whyReferMe: string;
+  status: "pending" | "accepted" | "rejected";
+  id: string;
+  submittedAt: string;
+}

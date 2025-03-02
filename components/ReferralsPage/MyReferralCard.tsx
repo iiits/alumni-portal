@@ -76,6 +76,14 @@ export default function MyReferralCard({
             <Trash2 size={16} /> Delete
           </Button>
         </div>
+
+        <div className="mt-4">
+          <Link href={`/referrals/${referral.id}`}>
+            <Button variant="outline" className="w-full">
+              View Details
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

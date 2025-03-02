@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ referralId: string }> },
+  context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { referralId } = await context.params;
+    const { id } = await context.params;
 
     const token = req.cookies.get("token")?.value;
     if (!token) {
@@ -14,7 +14,7 @@ export async function GET(
     }
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/submissions/${referralId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/submissions/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

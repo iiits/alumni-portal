@@ -18,6 +18,7 @@ import CreateNew from "./CreateNew";
 import MyReferrals from "./MyReferrals";
 import ReferralCard from "./ReferralCard";
 import ReferralFilter from "./ReferralFilter";
+import MySubmissions from "./ReferralSubmission.tsx/MySubmissions";
 import { Referral, ReferralFilters } from "./types";
 
 export default function Referrals() {
@@ -70,12 +71,15 @@ export default function Referrals() {
       </div>
 
       <Tabs defaultValue="all" className="w-[90vw] mx-auto pb-8">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="all" className="text-lg">
             All Referrals
           </TabsTrigger>
           <TabsTrigger value="mine" className="text-lg">
-            My Referrals
+            My Referral Posts
+          </TabsTrigger>
+          <TabsTrigger value="submissions" className="text-lg">
+            My Applications
           </TabsTrigger>
         </TabsList>
 
@@ -135,7 +139,7 @@ export default function Referrals() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl sm:text-3xl">
-                My Referrals
+                My Referral Posts
               </CardTitle>
               <CardDescription className="text-lg sm:text-xl">
                 Manage your referral postings.
@@ -143,6 +147,22 @@ export default function Referrals() {
             </CardHeader>
             <CardContent>
               <MyReferrals />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="submissions">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl">
+                My Applications
+              </CardTitle>
+              <CardDescription className="text-lg sm:text-xl">
+                Track your referral submissions and their status.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <MySubmissions />
             </CardContent>
           </Card>
         </TabsContent>

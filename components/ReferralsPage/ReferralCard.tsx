@@ -2,9 +2,14 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import CreateSubmission from "./ReferralSubmission.tsx/CreateSubmission";
 import { Referral } from "./types";
 
 export default function ReferralCard({ referral }: { referral: Referral }) {
+  const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+
   return (
     <div className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-2">
@@ -66,7 +71,25 @@ export default function ReferralCard({ referral }: { referral: Referral }) {
             <ExternalLink size={20} className="ml-1" />
           </Link>
         </div>
+
+        <div className="flex gap-2 mt-4">
+          {referral.isActive && (
+            <Button
+              onClick={() => setIsSubmitDialogOpen(true)}
+              variant="secondary"
+              className="w-full"
+            >
+              Submit Application
+            </Button>
+          )}
+        </div>
       </div>
+
+      <CreateSubmission
+        referralId={referral.id}
+        isOpen={isSubmitDialogOpen}
+        setIsOpen={setIsSubmitDialogOpen}
+      />
     </div>
   );
 }

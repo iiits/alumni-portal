@@ -24,6 +24,7 @@ import { Label } from "../ui/label";
 interface JobPositionData {
   title: string;
   type: "full-time" | "part-time" | "freelancer" | "intern" | "entrepreneur";
+  company: string; 
   start: string;
   end?: string | null;
   ongoing: boolean;
@@ -90,6 +91,7 @@ export function AlumniDetailsForm() {
     } else {
       payload.jobPosition.forEach((job, index) => {
         if (!job.title) errors.push(`Job ${index + 1}: Title is required`);
+        if (!job.company) errors.push(`Job ${index + 1}: Company is required`); // Add this line
         if (!job.type) errors.push(`Job ${index + 1}: Type is required`);
         if (!job.start) errors.push(`Job ${index + 1}: Start date is required`);
         if (!job.location)
@@ -168,6 +170,7 @@ export function AlumniDetailsForm() {
 
       const jobData: JobPositionData = {
         title,
+        company: formData.get(`company-${index}`)?.toString().trim() || '',
         type,
         start: convertToISODate(startDate)!, // Convert to ISO string
         end: endDate ? convertToISODate(endDate) : null,
@@ -324,6 +327,7 @@ export function AlumniDetailsForm() {
 
     const requiredFields = [
       `jobTitle-${lastIndex}`,
+      `companyName-${lastIndex}`,
       `jobType-${lastIndex}`,
       `jobStart-${lastIndex}`,
       `jobLocation-${lastIndex}`,
@@ -458,9 +462,16 @@ export function AlumniDetailsForm() {
                         />
                       </LabelInputContainer>
                       <LabelInputContainer>
-                        <Label htmlFor={`jobType-${index}`}>
-                          Employment Type
-                        </Label>
+                        <Label htmlFor={`company-${index}`}>Company or Organization</Label>
+                        <Input
+                          id={`company-${index}`}
+                          name={`company-${index}`}
+                          placeholder="Google"
+                          required
+                        />
+                      </LabelInputContainer>
+                      <LabelInputContainer>
+                        <Label htmlFor={`jobType-${index}`}>Employment Type</Label>
                         <Select name={`jobType-${index}`}>
                           <SelectTrigger>
                             <SelectValue placeholder="Select Job Type" />

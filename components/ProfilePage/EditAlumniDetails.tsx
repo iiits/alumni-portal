@@ -14,32 +14,37 @@ import { axiosInstance } from "@/lib/api/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+interface JobPositionData {
+  title: string;
+  type: "full-time" | "part-time" | "freelancer" | "intern" | "entrepreneur";
+  company: string;
+  start: string;
+  end?: string | null;
+  ongoing: boolean;
+  location: string;
+  jobType: "on-site" | "remote" | "hybrid";
+  description?: string;
+}
+
+interface EducationData {
+  school: string;
+  degree: string;
+  fieldOfStudy: string;
+  start: string;
+  end?: string | null;
+  ongoing: boolean;
+  location: string;
+  description?: string;
+}
+
 interface AlumniDetails {
   id: string;
   location: {
     city: string;
     country: string;
   };
-  jobPosition: {
-    title: string;
-    type: string;
-    start: string;
-    end: string | null;
-    ongoing: boolean;
-    location: string;
-    jobType: string;
-    description: string;
-  }[];
-  education: {
-    school: string;
-    degree: string;
-    fieldOfStudy: string;
-    start: string;
-    end: string;
-    ongoing: boolean;
-    location: string;
-    description: string;
-  }[];
+  jobPosition: JobPositionData[];  
+  education: EducationData[];
   expertise: string[];
 }
 
@@ -67,7 +72,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
       setOpen(false);
       setTimeout(() => {
         router.refresh();
-      }, 200);
+      }, 100);
     },
     onError: (error) => {
       toast.error("Error updating alumni details: " + error.message);
@@ -101,12 +106,13 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
         ...prev.jobPosition,
         {
           title: "",
-          type: "",
+          company: "",
+          type: "full-time", // Set a default value from the allowed types
           start: "",
           end: null,
           ongoing: false,
           location: "",
-          jobType: "",
+          jobType: "on-site", // Set a default value from the allowed types
           description: "",
         },
       ],
@@ -168,7 +174,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
   return (
     <div>
       <Modal>
-        <ModalTrigger className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        <ModalTrigger className="w-full max-w-[300px] text-center sm:w-auto bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors text-sm">
           {isLoading ? "Updating..." : "Edit Alumni Details"}
         </ModalTrigger>
         <ModalBody className="max-h-[80vh] overflow-y-auto p-4">
@@ -213,24 +219,41 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                     }
                     className="w-full p-2 border rounded-md"
                   />
-
-                  {/* Type */}
-                  <label className="block font-semibold mt-2">Type</label>
+                  {/* company */}
+                  <label className="block font-semibold">Company or Organization</label>
                   <input
-                    value={job.type}
+                    value={job.company}
                     onChange={(e) =>
                       handleArrayChange(
                         "jobPosition",
                         index,
-                        "type",
+                        "company",
                         e.target.value,
                       )
                     }
                     className="w-full p-2 border rounded-md"
                   />
 
-                  {/* Company / Location */}
-                  <label className="block font-semibold mt-2">Company</label>
+                  {/* Type */}
+                  <label className="block font-semibold mt-2">Emplyment Type</label>
+                  <select
+                    value={job.type}
+                    onChange={(e) =>
+                      handleArrayChange("jobPosition", index, "type", e.target.value)
+                    }
+                    className="w-full p-2 border rounded-md bg-white"
+                  >
+                    <option value="">Select type</option>
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="freelancer">Freelancer</option>
+                    <option value="intern">Intern</option>
+                    <option value="entrepreneur">Entrepreneur</option>
+                  </select>
+
+
+                  {/* Location */}
+                  <label className="block font-semibold mt-2">Job Location</label>
                   <input
                     value={job.location}
                     onChange={(e) =>
@@ -245,19 +268,19 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   />
 
                   {/* Job Type */}
-                  <label className="block font-semibold mt-2">Job Type</label>
-                  <input
+                  <label className="block font-semibold mt-2">Work Type</label>
+                  <select
                     value={job.jobType}
                     onChange={(e) =>
-                      handleArrayChange(
-                        "jobPosition",
-                        index,
-                        "jobType",
-                        e.target.value,
-                      )
+                      handleArrayChange("jobPosition", index, "jobType", e.target.value)
                     }
-                    className="w-full p-2 border rounded-md"
-                  />
+                    className="w-full p-2 border rounded-md bg-white"
+                  >
+                    <option value="">Select job type</option>
+                    <option value="on-site">On-site</option>
+                    <option value="remote">Remote</option>
+                    <option value="hybrid">Hybrid</option>
+                  </select>
 
                   {/* Start Date */}
                   <label className="block font-semibold mt-2">Start Date</label>
@@ -343,7 +366,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <button
                     type="button"
                     onClick={() => removeJob(index)}
-                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    className="mt-2 px-4 py-2 bg-black text-white rounded-md hover:bg-black-600"
                   >
                     Remove Job
                   </button>
@@ -354,7 +377,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
               <button
                 type="button"
                 onClick={addNewJob}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                className="mt-4 px-4 py-2 bg-black text-white rounded-md hover:bg-black-600"
               >
                 + Add Job Position
               </button>
@@ -502,7 +525,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   {/* Remove Button */}
                   <button
                     onClick={() => removeEducation(index)}
-                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md"
+                    className="mt-2 px-4 py-2 bg-black text-white rounded-md"
                   >
                     Remove Education
                   </button>
@@ -512,7 +535,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
               {/* Add New Education Button */}
               <button
                 onClick={addEducation}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                className="mt-4 px-4 py-2 bg-black text-white rounded-md"
               >
                 Add New Education
               </button>
@@ -530,9 +553,9 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                       <button
                         type="button"
                         onClick={() => removeExpertise(index)}
-                        className="ml-2 text-red-600 font-bold"
+                        className="ml-2 text-red-500"
                       >
-                        ❌
+                        x
                       </button>
                     </div>
                   ))}
@@ -548,7 +571,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <button
                     type="button"
                     onClick={addExpertise}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md"
+                    className="ml-2 bg-black text-white px-4 py-2 rounded-md"
                   >
                     Add
                   </button>
@@ -558,7 +581,7 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
               <ModalFooter>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
+                  className="bg-black text-white px-4 py-2 rounded-md w-full"
                   disabled={isLoading}
                 >
                   {isLoading ? "Updating..." : "Update"}

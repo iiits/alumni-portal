@@ -24,7 +24,7 @@ import { Label } from "../ui/label";
 interface JobPositionData {
   title: string;
   type: "full-time" | "part-time" | "freelancer" | "intern" | "entrepreneur";
-  company: string; 
+  company: string;
   start: string;
   end?: string | null;
   ongoing: boolean;
@@ -170,7 +170,7 @@ export function AlumniDetailsForm() {
 
       const jobData: JobPositionData = {
         title,
-        company: formData.get(`company-${index}`)?.toString().trim() || '',
+        company: formData.get(`company-${index}`)?.toString().trim() || "",
         type,
         start: convertToISODate(startDate)!, // Convert to ISO string
         end: endDate ? convertToISODate(endDate) : null,
@@ -462,7 +462,9 @@ export function AlumniDetailsForm() {
                         />
                       </LabelInputContainer>
                       <LabelInputContainer>
-                        <Label htmlFor={`company-${index}`}>Company or Organization</Label>
+                        <Label htmlFor={`company-${index}`}>
+                          Company or Organization
+                        </Label>
                         <Input
                           id={`company-${index}`}
                           name={`company-${index}`}
@@ -471,7 +473,9 @@ export function AlumniDetailsForm() {
                         />
                       </LabelInputContainer>
                       <LabelInputContainer>
-                        <Label htmlFor={`jobType-${index}`}>Employment Type</Label>
+                        <Label htmlFor={`jobType-${index}`}>
+                          Employment Type
+                        </Label>
                         <Select name={`jobType-${index}`}>
                           <SelectTrigger>
                             <SelectValue placeholder="Select Job Type" />

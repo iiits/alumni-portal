@@ -159,7 +159,10 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                 <h3 className="font-semibold mb-4">Social Profiles</h3>
 
                 {formData.profiles.map((profile, index) => (
-                  <div key={index} className="mt-4 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                  <div
+                    key={index}
+                    className="mt-4 p-6 bg-gray-50 rounded-lg border border-gray-200"
+                  >
                     <label className="block font-semibold">Platform</label>
                     <select
                       value={profile.type}

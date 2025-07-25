@@ -20,7 +20,7 @@ import { Linkedin } from "lucide-react";
 import EditUserDetails from "./EditUserDetails";
 import EditAlumniDetails from "./EditAlumniDetails";
 import { ModalProvider } from "../ui/animated-modal";
-import Searching from "@/components/Commons/Searching"
+import Searching from "@/components/Commons/Searching";
 import NoData from "@/components/Commons/NoData";
 
 interface SocialMediaProfile {
@@ -115,26 +115,29 @@ const MyProfile: React.FC = () => {
     },
   });
 
-  if (isLoading) return (
-    <Searching
-      message="Loading Profile..."
-      description="Please wait while we fetch the Profile data."
-    />
-  );
-  if (error) return (
-    <NoData
-      message="Error loading Profile"
-      description="Please try again later."
-      url="/user/me"
-    />
-  );
-  if (!data)return (
-    <NoData
-      message="No Profile Data Found"
-      description="Please check back later."
-      url="/user/me"
-    />
-  );
+  if (isLoading)
+    return (
+      <Searching
+        message="Loading Profile..."
+        description="Please wait while we fetch the Profile data."
+      />
+    );
+  if (error)
+    return (
+      <NoData
+        message="Error loading Profile"
+        description="Please try again later."
+        url="/user/me"
+      />
+    );
+  if (!data)
+    return (
+      <NoData
+        message="No Profile Data Found"
+        description="Please check back later."
+        url="/user/me"
+      />
+    );
 
   return (
     <div className="w-[80%] lg:w-[55%] mx-auto my-8 p-6 bg-white border border-gray-200 rounded-2xl flex flex-col space-y-6 transition-all duration-300">
@@ -195,15 +198,14 @@ const MyProfile: React.FC = () => {
         </ModalProvider>
 
         {data.role === "student" && (
-            <button
-              className="w-full max-w-[300px] text-center sm:w-auto bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors text-sm"
-              onClick={() => router.push("/alumnidetails")}
-            >
-              Register as Alumni
-            </button>
+          <button
+            className="w-full max-w-[300px] text-center sm:w-auto bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors text-sm"
+            onClick={() => router.push("/alumnidetails")}
+          >
+            Register as Alumni
+          </button>
         )}
       </div>
-
 
       {/* Social Links */}
       <div className="flex flex-wrap gap-4">
@@ -220,7 +222,7 @@ const MyProfile: React.FC = () => {
                 >
                   {socialIcons[profile.type]}
                 </Link>
-              )
+              ),
           )}
       </div>
 
@@ -245,151 +247,183 @@ const MyProfile: React.FC = () => {
         </div>
       </div>
 
-
-
       {/* Bio */}
       <p className="text-gray-700 text-lg border-l-4 pl-4 border-blue-500 italic">
         {data?.bio}
       </p>
 
       {/* Alumni Details */}
-      {(data.role === "alumni" || data.role === "admin") && data.alumniDetails && (
-        <div className="space-y-6 border-t border-gray-200 pt-6">
-          {data.alumniDetails.verified === false && (
-            <p className="text-yellow-700 font-medium bg-yellow-50 px-4 py-2 rounded-md border border-yellow-200">
-              Alumni details verification in progress
-            </p>
-          )}
-
-          {/* Edit Button */}
-          <ModalProvider>
-            <EditAlumniDetails
-              alumniData={{
-                id: id || "",
-                location: {
-                  city: data.alumniDetails.location.city || "",
-                  country: data.alumniDetails.location.country || "",
-                },
-                jobPosition: data.alumniDetails.jobPosition.map((job) => ({
-                  title: job.title,
-                  company: job.company,
-                  type: job.type,
-                  start: job.start,
-                  end: job.end || null,
-                  ongoing: job.ongoing,
-                  location: job.location,
-                  jobType: job.jobType,
-                  description: job.description,
-                })),
-                education: data.alumniDetails.education.map((edu) => ({
-                  school: edu.school,
-                  degree: edu.degree,
-                  fieldOfStudy: edu.fieldOfStudy,
-                  start: edu.start,
-                  end: edu.end,
-                  ongoing: edu.ongoing,
-                  location: edu.location,
-                  description: edu.description,
-                })),
-                expertise: data.alumniDetails.expertise || [],
-              }}
-            />
-          </ModalProvider>
-
-          {/* Location */}
-          <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-1">Location</h4>
-            <p className="text-gray-700">
-              {data.alumniDetails.location.city}, {data.alumniDetails.location.country}
-            </p>
-          </div>
-
-          {/* Job Positions Timeline */}
-          <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-3">Career Timeline</h4>
-            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
-              {data.alumniDetails.jobPosition
-                .sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime())
-                .map((job, index) => (
-                  <div key={index} className="relative flex items-start group">
-                    <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
-                      <span className="h-2.5 w-2.5 rounded-full bg-black"></span>
-                    </div>
-                    <div className="ml-12 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                      <div className="flex flex-col gap-1">
-                        <p className="text-lg font-semibold text-gray-800">{job.title}</p>
-                        <p className="text-md text-black">{job.company} • {job.type}</p>
-                        <p className="text-sm text-gray-600">{job.location} • {job.jobType}</p>
-                        <p className="text-sm text-gray-500 font-medium">
-                          {job.ongoing
-                            ? `${new Date(job.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - Present`
-                            : `${new Date(job.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${job.end ? new Date(job.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Present'}`}
-                        </p>
-                        {job.description && (
-                          <p className="text-gray-700 mt-2 leading-relaxed">{job.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Education Timeline */}
-          <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-3">Education Timeline</h4>
-            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
-              {data.alumniDetails.education
-                .sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime())
-                .map((edu, index) => (
-                  <div key={index} className="relative flex items-start group">
-                    <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
-                      <span className="h-2.5 w-2.5 rounded-full bg-black"></span>
-                    </div>
-                    <div className="ml-12 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                      <div className="flex flex-col gap-1">
-                        <p className="text-lg font-semibold text-gray-800">
-                          {edu.school}
-                        </p>
-                        <p className="text-md font-medium text-gray-700">
-                          {edu.degree} in {edu.fieldOfStudy}
-                        </p>
-                        <p className="text-sm text-gray-600">{edu.location}</p>
-                        <p className="text-sm text-gray-500 font-medium">
-                          {edu.ongoing
-                            ? `${new Date(edu.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - Present`
-                            : `${new Date(edu.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${new Date(edu.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
-                        </p>
-                        {edu.description && (
-                          <p className="text-gray-700 mt-2 leading-relaxed">{edu.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Expertise */}
-          <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-2">Expertise</h4>
-            {data.alumniDetails.expertise?.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
-                {data.alumniDetails.expertise.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">N/A</p>
+      {(data.role === "alumni" || data.role === "admin") &&
+        data.alumniDetails && (
+          <div className="space-y-6 border-t border-gray-200 pt-6">
+            {data.alumniDetails.verified === false && (
+              <p className="text-yellow-700 font-medium bg-yellow-50 px-4 py-2 rounded-md border border-yellow-200">
+                Alumni details verification in progress
+              </p>
             )}
+
+            {/* Edit Button */}
+            <ModalProvider>
+              <EditAlumniDetails
+                alumniData={{
+                  id: id || "",
+                  location: {
+                    city: data.alumniDetails.location.city || "",
+                    country: data.alumniDetails.location.country || "",
+                  },
+                  jobPosition: data.alumniDetails.jobPosition.map((job) => ({
+                    title: job.title,
+                    company: job.company,
+                    type: job.type,
+                    start: job.start,
+                    end: job.end || null,
+                    ongoing: job.ongoing,
+                    location: job.location,
+                    jobType: job.jobType,
+                    description: job.description,
+                  })),
+                  education: data.alumniDetails.education.map((edu) => ({
+                    school: edu.school,
+                    degree: edu.degree,
+                    fieldOfStudy: edu.fieldOfStudy,
+                    start: edu.start,
+                    end: edu.end,
+                    ongoing: edu.ongoing,
+                    location: edu.location,
+                    description: edu.description,
+                  })),
+                  expertise: data.alumniDetails.expertise || [],
+                }}
+              />
+            </ModalProvider>
+
+            {/* Location */}
+            <div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-1">
+                Location
+              </h4>
+              <p className="text-gray-700">
+                {data.alumniDetails.location.city},{" "}
+                {data.alumniDetails.location.country}
+              </p>
+            </div>
+
+            {/* Job Positions Timeline */}
+            <div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-3">
+                Career Timeline
+              </h4>
+              <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
+                {data.alumniDetails.jobPosition
+                  .sort(
+                    (a, b) =>
+                      new Date(b.start).getTime() - new Date(a.start).getTime(),
+                  )
+                  .map((job, index) => (
+                    <div
+                      key={index}
+                      className="relative flex items-start group"
+                    >
+                      <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
+                        <span className="h-2.5 w-2.5 rounded-full bg-black"></span>
+                      </div>
+                      <div className="ml-12 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-lg font-semibold text-gray-800">
+                            {job.title}
+                          </p>
+                          <p className="text-md text-black">
+                            {job.company} • {job.type}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {job.location} • {job.jobType}
+                          </p>
+                          <p className="text-sm text-gray-500 font-medium">
+                            {job.ongoing
+                              ? `${new Date(job.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - Present`
+                              : `${new Date(job.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - ${job.end ? new Date(job.end).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "Present"}`}
+                          </p>
+                          {job.description && (
+                            <p className="text-gray-700 mt-2 leading-relaxed">
+                              {job.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Education Timeline */}
+            <div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-3">
+                Education Timeline
+              </h4>
+              <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
+                {data.alumniDetails.education
+                  .sort(
+                    (a, b) =>
+                      new Date(b.start).getTime() - new Date(a.start).getTime(),
+                  )
+                  .map((edu, index) => (
+                    <div
+                      key={index}
+                      className="relative flex items-start group"
+                    >
+                      <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
+                        <span className="h-2.5 w-2.5 rounded-full bg-black"></span>
+                      </div>
+                      <div className="ml-12 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-lg font-semibold text-gray-800">
+                            {edu.school}
+                          </p>
+                          <p className="text-md font-medium text-gray-700">
+                            {edu.degree} in {edu.fieldOfStudy}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {edu.location}
+                          </p>
+                          <p className="text-sm text-gray-500 font-medium">
+                            {edu.ongoing
+                              ? `${new Date(edu.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - Present`
+                              : `${new Date(edu.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - ${new Date(edu.end).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`}
+                          </p>
+                          {edu.description && (
+                            <p className="text-gray-700 mt-2 leading-relaxed">
+                              {edu.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Expertise */}
+            <div>
+              <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                Expertise
+              </h4>
+              {data.alumniDetails.expertise?.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {data.alumniDetails.expertise.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">N/A</p>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };

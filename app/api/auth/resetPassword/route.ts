@@ -1,4 +1,4 @@
-import { NextRequest,NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 export async function POST(req: NextRequest) {
@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     if (!token) {
       return NextResponse.json(
         { message: "Missing token in request body." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

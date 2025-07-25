@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/api/axios";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ export default function RequestResetPassword() {
   const requestResetMutation = useMutation({
     mutationFn: async (email: string) => {
       const response = await axiosInstance.post("/auth/requestResetPassword", {
-        email: email
+        email: email,
       });
       return response.data;
     },
@@ -22,8 +22,7 @@ export default function RequestResetPassword() {
     },
     onError: (error: any) => {
       toast.error(
-        error.response?.data?.message ||
-          "Failed to send reset password link.",
+        error.response?.data?.message || "Failed to send reset password link.",
       );
     },
   });
@@ -31,7 +30,7 @@ export default function RequestResetPassword() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
+    const email = formData.get("email") as string;
     requestResetMutation.mutate(email);
   };
 
@@ -55,7 +54,9 @@ export default function RequestResetPassword() {
                 Check Your Email
               </h2>
               <p className="text-gray-600 dark:text-gray-300">
-                We&apos;ve sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
+                We&apos;ve sent a password reset link to your email address.
+                Please check your inbox and follow the instructions to reset
+                your password.
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Note: The link will expire in 15 minutes for security reasons.
@@ -68,38 +69,39 @@ export default function RequestResetPassword() {
                   Reset Your Password
                 </h2>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Enter your college email address below to receive a password reset link.
+                  Enter your college email address below to receive a password
+                  reset link.
                 </p>
               </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label 
-                htmlFor="email" 
-                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-              >
-                College Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="your.email@iiits.in"
-                required
-                pattern=".*@iiits\.in$"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={requestResetMutation.isPending}
-              className="w-full bg-black text-white rounded-md py-2 px-4 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
-            >
-              {requestResetMutation.isPending
-                ? "Sending Link..."
-                : "Send Reset Link"}
-            </button>
-          </form>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                  >
+                    College Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="your.email@iiits.in"
+                    required
+                    pattern=".*@iiits\.in$"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={requestResetMutation.isPending}
+                  className="w-full bg-black text-white rounded-md py-2 px-4 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
+                >
+                  {requestResetMutation.isPending
+                    ? "Sending Link..."
+                    : "Send Reset Link"}
+                </button>
+              </form>
             </>
           )}
         </div>

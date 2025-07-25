@@ -104,10 +104,10 @@ export default function LoginForm() {
 
         {/* Add Forgot Password Link */}
         <div className="text-center mt-4">
-        <button
+          <button
             type="button"
             onClick={() => {
-              router.push('/auth/requestresetpassword');
+              router.push("/auth/requestresetpassword");
               // router.refresh();
               // window.location.href = '/auth/requestResetPassword';
             }}

@@ -25,27 +25,30 @@ export function EventTimeline() {
       return response.data.data;
     },
   });
-  
-  if (isLoading) return (
-    <Searching
-      message="Loading Events..."
-      description="Please wait while we fetch the Events data."
-    />
-  );
-  if (error) return (
-    <NoData
-      message="Error loading Events"
-      description="Please try again later."
-      url="/events"
-    />
-  );
-  if (!data)return (
-    <NoData
-      message="No Events Data Found"
-      description="Please check back later."
-      url="/events"
-    />
-  );
+
+  if (isLoading)
+    return (
+      <Searching
+        message="Loading Events..."
+        description="Please wait while we fetch the Events data."
+      />
+    );
+  if (error)
+    return (
+      <NoData
+        message="Error loading Events"
+        description="Please try again later."
+        url="/events"
+      />
+    );
+  if (!data)
+    return (
+      <NoData
+        message="No Events Data Found"
+        description="Please check back later."
+        url="/events"
+      />
+    );
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setYear(e.target.value);

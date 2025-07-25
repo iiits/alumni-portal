@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { axiosInstance } from "@/lib/api/axios"; 
+import { axiosInstance } from "@/lib/api/axios";
 
 interface ContactForm {
   subject: string;

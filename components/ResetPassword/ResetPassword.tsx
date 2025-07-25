@@ -26,14 +26,14 @@ export default function ResetPassword() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success("Password reset successful! Please login with your new password.");
+      toast.success(
+        "Password reset successful! Please login with your new password.",
+      );
       formRef.current?.reset();
       setTimeout(() => router.push("/auth/login"), 2000);
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Failed to reset password.",
-      );
+      toast.error(error.response?.data?.message || "Failed to reset password.");
     },
   });
 

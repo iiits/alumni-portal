@@ -43,7 +43,7 @@ interface AlumniDetails {
     city: string;
     country: string;
   };
-  jobPosition: JobPositionData[];  
+  jobPosition: JobPositionData[];
   education: EducationData[];
   expertise: string[];
 }
@@ -220,7 +220,9 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                     className="w-full p-2 border rounded-md"
                   />
                   {/* company */}
-                  <label className="block font-semibold">Company or Organization</label>
+                  <label className="block font-semibold">
+                    Company or Organization
+                  </label>
                   <input
                     value={job.company}
                     onChange={(e) =>
@@ -235,11 +237,18 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   />
 
                   {/* Type */}
-                  <label className="block font-semibold mt-2">Emplyment Type</label>
+                  <label className="block font-semibold mt-2">
+                    Emplyment Type
+                  </label>
                   <select
                     value={job.type}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "type", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "type",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md bg-white"
                   >
@@ -251,9 +260,10 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                     <option value="entrepreneur">Entrepreneur</option>
                   </select>
 
-
                   {/* Location */}
-                  <label className="block font-semibold mt-2">Job Location</label>
+                  <label className="block font-semibold mt-2">
+                    Job Location
+                  </label>
                   <input
                     value={job.location}
                     onChange={(e) =>
@@ -272,7 +282,12 @@ const EditAlumniDetails: React.FC<EditAlumniDetailsProps> = ({
                   <select
                     value={job.jobType}
                     onChange={(e) =>
-                      handleArrayChange("jobPosition", index, "jobType", e.target.value)
+                      handleArrayChange(
+                        "jobPosition",
+                        index,
+                        "jobType",
+                        e.target.value,
+                      )
                     }
                     className="w-full p-2 border rounded-md bg-white"
                   >

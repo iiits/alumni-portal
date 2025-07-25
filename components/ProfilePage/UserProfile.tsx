@@ -105,8 +105,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
       />
     );
   }
-  console.log("Data");
-  console.log(data);
 
   return (
     <div className="w-[80%] lg:w-[55%] mx-auto my-8 p-6 bg-white border border-gray-200 rounded-2xl flex flex-col space-y-6 transition-all duration-300">
@@ -194,18 +192,26 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         <div className="space-y-6 border-t border-gray-200 pt-6">
           {/* Location */}
           <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-1">Location</h4>
+            <h4 className="text-xl font-semibold text-gray-900 mb-1">
+              Location
+            </h4>
             <p className="text-gray-700">
-              {data.alumniDetails.location.city}, {data.alumniDetails.location.country}
+              {data.alumniDetails.location.city},{" "}
+              {data.alumniDetails.location.country}
             </p>
           </div>
 
           {/* Job Positions Timeline */}
           <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-3">Career Timeline</h4>
+            <h4 className="text-xl font-semibold text-gray-900 mb-3">
+              Career Timeline
+            </h4>
             <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 [@media(max-width:425px)]:before:ml-3 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
               {data.alumniDetails.jobPosition
-                .sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime())
+                .sort(
+                  (a, b) =>
+                    new Date(b.start).getTime() - new Date(a.start).getTime(),
+                )
                 .map((job, index) => (
                   <div key={index} className="relative flex items-start group">
                     <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
@@ -213,16 +219,24 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
                     </div>
                     <div className="ml-12 [@media(max-width:425px)]:ml-8 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                       <div className="flex flex-col gap-1">
-                        <p className="text-lg font-semibold text-gray-800">{job.title}</p>
-                        <p className="text-md text-black">{job.company} • {job.type}</p>
-                        <p className="text-sm text-gray-600">{job.location} • {job.jobType}</p>
+                        <p className="text-lg font-semibold text-gray-800">
+                          {job.title}
+                        </p>
+                        <p className="text-md text-black">
+                          {job.company} • {job.type}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {job.location} • {job.jobType}
+                        </p>
                         <p className="text-sm text-gray-500 font-medium">
                           {job.ongoing
-                            ? `${new Date(job.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - Present`
-                            : `${new Date(job.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${job.end ? new Date(job.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Present'}`}
+                            ? `${new Date(job.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - Present`
+                            : `${new Date(job.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - ${job.end ? new Date(job.end).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "Present"}`}
                         </p>
                         {job.description && (
-                          <p className="text-gray-700 mt-2 leading-relaxed">{job.description}</p>
+                          <p className="text-gray-700 mt-2 leading-relaxed">
+                            {job.description}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -233,10 +247,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
 
           {/* Education Timeline */}
           <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-3">Education Timeline</h4>
+            <h4 className="text-xl font-semibold text-gray-900 mb-3">
+              Education Timeline
+            </h4>
             <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 [@media(max-width:425px)]:before:ml-3 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
               {data.alumniDetails.education
-                .sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime())
+                .sort(
+                  (a, b) =>
+                    new Date(b.start).getTime() - new Date(a.start).getTime(),
+                )
                 .map((edu, index) => (
                   <div key={index} className="relative flex items-start group">
                     <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
@@ -253,11 +272,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
                         <p className="text-sm text-gray-600">{edu.location}</p>
                         <p className="text-sm text-gray-500 font-medium">
                           {edu.ongoing
-                            ? `${new Date(edu.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - Present`
-                            : `${new Date(edu.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${new Date(edu.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
+                            ? `${new Date(edu.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - Present`
+                            : `${new Date(edu.start).toLocaleDateString("en-US", { month: "long", year: "numeric" })} - ${new Date(edu.end).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`}
                         </p>
                         {edu.description && (
-                          <p className="text-gray-700 mt-2 leading-relaxed">{edu.description}</p>
+                          <p className="text-gray-700 mt-2 leading-relaxed">
+                            {edu.description}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -268,7 +289,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
 
           {/* Expertise */}
           <div>
-            <h4 className="text-xl font-semibold text-gray-900 mb-2">Expertise</h4>
+            <h4 className="text-xl font-semibold text-gray-900 mb-2">
+              Expertise
+            </h4>
             {data.alumniDetails.expertise?.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {data.alumniDetails.expertise.map((skill, index) => (

@@ -40,6 +40,7 @@ interface UserProfileData {
     };
     jobPosition: {
       title: string;
+      company: string;
       type: string;
       start: string;
       end: string | null;
@@ -108,10 +109,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
   console.log(data);
 
   return (
-    <div className="w-full max-w-[95%] mx-auto p-6 bg-white shadow-lg rounded-2xl flex flex-col space-y-6">
+    <div className="w-[80%] lg:w-[55%] mx-auto my-8 p-6 bg-white border border-gray-200 rounded-2xl flex flex-col space-y-6 transition-all duration-300">
       {/* Profile Header */}
-      <div className="flex items-center gap-6 min-w-0">
-        {/* Profile Picture - Fixed size and shape */}
+      <div className="flex flex-col sm:flex-row items-center gap-6">
+        {/* Profile Picture */}
         <div className="flex-shrink-0">
           {data?.profilePicture ? (
             <Image
@@ -122,30 +123,30 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
               className="w-28 h-28 rounded-full border-4 border-gray-200 object-cover"
             />
           ) : (
-            <div className="w-28 h-28 bg-gray-200 rounded-full border-4 border-gray-200 flex-shrink-0">
-              <div className="flex items-center justify-center h-full text-gray-500 text-6xl">
-                {data?.name[0]}
-              </div>
+            <div className="w-28 h-28 bg-gray-200 rounded-full border-4 border-gray-200 flex items-center justify-center text-gray-500 text-6xl">
+              {data?.name[0]}
             </div>
           )}
         </div>
 
-        {/* User Info - Flexible width with overflow handling */}
-        <div className="text-left min-w-0 flex-grow">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight break-words">
+        {/* User Info */}
+        <div className="text-center sm:text-left flex-1 min-w-0">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight break-words">
             {data?.name}
           </h2>
-          <p className="text-gray-500 text-lg md:text-xl break-words mt-2">
+          <p className="text-gray-600 text-lg md:text-xl mt-1 break-words">
             {data?.department} | Batch {data?.batch}
           </p>
         </div>
       </div>
 
-      {/* Name */}
-      <h3 className="text-3xl font-semibold">a.k.a. {data?.username}</h3>
+      {/* Username */}
+      <h3 className="text-xl font-semibold text-gray-800 text-center sm:text-left">
+        a.k.a. {data?.username}
+      </h3>
 
-      {/* Social Media Links */}
-      <div className="flex space-x-4">
+      {/* Social Links */}
+      <div className="flex flex-wrap gap-4">
         {data?.profiles &&
           data?.profiles.map(
             (profile, index) =>
@@ -155,6 +156,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
                   href={profile.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="transition-transform hover:scale-110"
                 >
                   {socialIcons[profile.type]}
                 </Link>
@@ -182,70 +184,106 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         </Link>
       </div>
 
-      {/* Bio Section */}
-      <p className="text-gray-700 text-lg border-l-4 pl-4 border-blue-500">
+      {/* Bio */}
+      <p className="text-gray-700 text-lg border-l-4 pl-4 border-blue-500 italic">
         {data?.bio}
       </p>
-      {/*Alumni Details (Only if role is 'alumni' and verified is true) */}
+
+      {/* Alumni Details */}
       {data.alumniDetails && data.alumniDetails?.verified && (
-        <div className="space-y-4 border-t pt-4">
-          <h2 className="text-xl font-semibold">Alumni Details</h2>
-
-          <p className="text-lg font-semibold">
-            Location: {data.alumniDetails.location.city},{" "}
-            {data.alumniDetails.location.country}
-          </p>
-
-          {/* Job Positions */}
+        <div className="space-y-6 border-t border-gray-200 pt-6">
+          {/* Location */}
           <div>
-            <p className="text-lg font-semibold">Job Positions:</p>
-            {data.alumniDetails.jobPosition.map((job, index) => (
-              <div
-                key={index}
-                className="pl-4 border-l-2 border-gray-300 space-y-1"
-              >
-                <p className="text-gray-700">
-                  {job.title} ({job.type})
-                </p>
-                <p className="text-gray-600">
-                  {job.location} | {job.jobType}
-                </p>
-                <p className="text-gray-500">
-                  {job.ongoing
-                    ? "Ongoing"
-                    : `${job.start.split("T")[0]} to ${job.end ? job.end.split("T")[0] : "Present"}`}
-                </p>
-                <p className="text-gray-500">{job.description}</p>
-              </div>
-            ))}
+            <h4 className="text-xl font-semibold text-gray-900 mb-1">Location</h4>
+            <p className="text-gray-700">
+              {data.alumniDetails.location.city}, {data.alumniDetails.location.country}
+            </p>
           </div>
 
-          {/* Education */}
+          {/* Job Positions Timeline */}
           <div>
-            <p className="text-lg font-semibold">Education:</p>
-            {data.alumniDetails.education.map((edu, index) => (
-              <div
-                key={index}
-                className="pl-4 border-l-2 border-gray-300 space-y-1"
-              >
-                <p className="text-gray-700">
-                  {edu.school} - {edu.degree} in {edu.fieldOfStudy}
-                </p>
-                <p className="text-gray-600">{edu.location}</p>
-                <p className="text-gray-500">
-                  {edu.ongoing
-                    ? "Ongoing"
-                    : `${edu.start.split("T")[0]} to ${edu.end.split("T")[0]}`}
-                </p>
-                <p className="text-gray-500">{edu.description}</p>
-              </div>
-            ))}
+            <h4 className="text-xl font-semibold text-gray-900 mb-3">Career Timeline</h4>
+            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 [@media(max-width:425px)]:before:ml-3 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
+              {data.alumniDetails.jobPosition
+                .sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime())
+                .map((job, index) => (
+                  <div key={index} className="relative flex items-start group">
+                    <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
+                      <span className="h-2.5 w-2.5 rounded-full bg-black"></span>
+                    </div>
+                    <div className="ml-12 [@media(max-width:425px)]:ml-8 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                      <div className="flex flex-col gap-1">
+                        <p className="text-lg font-semibold text-gray-800">{job.title}</p>
+                        <p className="text-md text-black">{job.company} • {job.type}</p>
+                        <p className="text-sm text-gray-600">{job.location} • {job.jobType}</p>
+                        <p className="text-sm text-gray-500 font-medium">
+                          {job.ongoing
+                            ? `${new Date(job.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - Present`
+                            : `${new Date(job.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${job.end ? new Date(job.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Present'}`}
+                        </p>
+                        {job.description && (
+                          <p className="text-gray-700 mt-2 leading-relaxed">{job.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {/* Education Timeline */}
+          <div>
+            <h4 className="text-xl font-semibold text-gray-900 mb-3">Education Timeline</h4>
+            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 [@media(max-width:425px)]:before:ml-3 before:h-full before:w-0.5 before:-translate-x-px before:bg-gradient-to-b before:from-transparent before:via-gray-300 before:to-transparent">
+              {data.alumniDetails.education
+                .sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime())
+                .map((edu, index) => (
+                  <div key={index} className="relative flex items-start group">
+                    <div className="absolute left-0 h-10 w-10 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-md">
+                      <span className="h-2.5 w-2.5 rounded-full bg-black"></span>
+                    </div>
+                    <div className="ml-12 [@media(max-width:425px)]:ml-8 flex-1 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                      <div className="flex flex-col gap-1">
+                        <p className="text-lg font-semibold text-gray-800">
+                          {edu.school}
+                        </p>
+                        <p className="text-md font-medium text-gray-700">
+                          {edu.degree} in {edu.fieldOfStudy}
+                        </p>
+                        <p className="text-sm text-gray-600">{edu.location}</p>
+                        <p className="text-sm text-gray-500 font-medium">
+                          {edu.ongoing
+                            ? `${new Date(edu.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - Present`
+                            : `${new Date(edu.start).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${new Date(edu.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
+                        </p>
+                        {edu.description && (
+                          <p className="text-gray-700 mt-2 leading-relaxed">{edu.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
 
           {/* Expertise */}
-          <p className="text-gray-700">
-            Expertise: {data.alumniDetails.expertise?.join(", ") || "N/A"}
-          </p>
+          <div>
+            <h4 className="text-xl font-semibold text-gray-900 mb-2">Expertise</h4>
+            {data.alumniDetails.expertise?.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {data.alumniDetails.expertise.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">N/A</p>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -112,14 +112,13 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
   return (
     <div>
       <Modal>
-        <ModalTrigger className="bg-blue-500 text-white px-4 py-2 rounded-md">
-          {isLoading ? "Updating..." : "Edit Details"}{" "}
-          {/* Show loading state on button */}
+        <ModalTrigger className="w-full max-w-[300px] text-center sm:w-auto bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors text-sm">
+          {isLoading ? "Updating..." : "Edit Details"}
         </ModalTrigger>
-        <ModalBody className="max-h-[80vh] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        <ModalBody className="max-h-[80vh] overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
           <ModalContent>
-            <h2 className="text-xl font-bold mb-4">Edit User Details</h2>
-            <form onSubmit={onSubmit} className="space-y-4">
+            <h2 className="text-2xl font-bold mb-6">Edit User Details</h2>
+            <form onSubmit={onSubmit} className="space-y-6">
               <div>
                 <label className="block font-semibold">Name</label>
                 <input
@@ -157,10 +156,10 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                 />
               </div>
               <div>
-                <h3 className="font-semibold">Social Profiles</h3>
+                <h3 className="font-semibold mb-4">Social Profiles</h3>
 
                 {formData.profiles.map((profile, index) => (
-                  <div key={index} className="mt-2 p-4 bg-gray-100 rounded-md">
+                  <div key={index} className="mt-4 p-6 bg-gray-50 rounded-lg border border-gray-200">
                     <label className="block font-semibold">Platform</label>
                     <select
                       value={profile.type}
@@ -207,7 +206,7 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                     <button
                       type="button"
                       onClick={() => removeProfile(index)}
-                      className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                      className="mt-4 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
                     >
                       Remove
                     </button>
@@ -218,17 +217,17 @@ const EditUserDetails: React.FC<EditUserDetailsProps> = ({ userData }) => {
                 <button
                   type="button"
                   onClick={addNewProfile}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="mt-6 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
                 >
                   + Add Social Profile
                 </button>
               </div>
 
-              <ModalFooter>
+              <ModalFooter className="pt-6">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md w-full"
-                  disabled={isLoading} // Disable button while loading
+                  className="bg-black text-white px-6 py-2.5 rounded-md w-full hover:bg-gray-800 transition-colors disabled:bg-gray-400 "
+                  disabled={isLoading}
                 >
                   {isLoading ? "Updating..." : "Update"}
                 </button>

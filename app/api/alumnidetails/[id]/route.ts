@@ -7,6 +7,8 @@ export async function PUT(
 ) {
   try {
     const token = req.cookies.get("token")?.value;
+    // console.log("Token:", token); // Add this line
+
     if (!token) {
       return NextResponse.json(
         { message: "Not authorized - No token provided." },
@@ -23,9 +25,11 @@ export async function PUT(
         { status: 400 },
       );
     }
-
+    console.log("Alumni ID:", alumniId); 
     // Remove `id` and `verified` from the update data
     const { id, verified, ...updateData } = body;
+    // console.log("Update Data:", updateData); // Add this line
+    
 
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/api/alumni-details/${alumniId}`,

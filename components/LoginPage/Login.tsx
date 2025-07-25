@@ -102,6 +102,21 @@ export default function LoginForm() {
           <BottomGradient />
         </button>
 
+        {/* Add Forgot Password Link */}
+        <div className="text-center mt-4">
+        <button
+            type="button"
+            onClick={() => {
+              router.push('/auth/requestresetpassword');
+              // router.refresh();
+              // window.location.href = '/auth/requestResetPassword';
+            }}
+            className="text-sm text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
+          >
+            Forgot your password? Click here to reset
+          </button>
+        </div>
+
         {loginMutation.isError && (
           <p className="text-red-500 text-sm mt-2">
             {loginMutation.error?.response?.data?.message || "Login failed"}

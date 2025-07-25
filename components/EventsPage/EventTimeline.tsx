@@ -6,6 +6,8 @@ import { EventCard, EventCardProps } from "./EventCard";
 import { useQuery } from "@tanstack/react-query";
 import { useUserStore } from "@/lib/store";
 import { axiosInstance } from "@/lib/api/axios";
+import Searching from "@/components/Commons/Searching";
+import NoData from "@/components/Commons/NoData";
 
 export function EventTimeline() {
   const [year, setYear] = useState<string>("");
@@ -23,6 +25,27 @@ export function EventTimeline() {
       return response.data.data;
     },
   });
+  
+  if (isLoading) return (
+    <Searching
+      message="Loading Events..."
+      description="Please wait while we fetch the Events data."
+    />
+  );
+  if (error) return (
+    <NoData
+      message="Error loading Events"
+      description="Please try again later."
+      url="/events"
+    />
+  );
+  if (!data)return (
+    <NoData
+      message="No Events Data Found"
+      description="Please check back later."
+      url="/events"
+    />
+  );
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setYear(e.target.value);

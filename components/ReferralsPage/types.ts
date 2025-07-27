@@ -25,6 +25,7 @@ export interface ReferralFormData {
   jobDetails: JobDetails;
   lastApplyDate: string;
   numberOfReferrals: number;
+  isActive?: boolean;
 }
 
 export interface ReferralFilters {

@@ -29,6 +29,7 @@ export default function UpdateReferral({
   setIsOpen,
   refetch,
 }: EditReferralProps) {
+  console.log("Editing referral:", referral);
   const [formData, setFormData] = useState<ReferralFormData>({
     jobDetails: {
       title: referral.jobDetails.title,
@@ -39,6 +40,7 @@ export default function UpdateReferral({
     },
     lastApplyDate: referral.lastApplyDate.split("T")[0],
     numberOfReferrals: referral.numberOfReferrals,
+    isActive: referral.isActive,
   });
 
   const updateReferralMutation = useMutation({
@@ -193,6 +195,25 @@ export default function UpdateReferral({
               min={new Date().toISOString().split("T")[0]}
               required
             />
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <label htmlFor="isActive" className="flex items-center space-x-2">
+              <span>Active</span>
+              <Input
+                id="isActive"
+                name="isActive"
+                type="checkbox"
+                checked={formData.isActive}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isActive: e.target.checked,
+                  }))
+                }
+                className="w-4 h-4"
+              />
+            </label>
           </LabelInputContainer>
 
           <Button

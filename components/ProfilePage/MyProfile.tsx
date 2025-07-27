@@ -253,7 +253,9 @@ const MyProfile: React.FC = () => {
       </p>
 
       {/* Alumni Details */}
-      {(data.role === "alumni" || data.role === "admin") &&
+      {(data.role === "alumni" ||
+        data.role === "admin" ||
+        (data.role === "student" && data.alumniDetails?.verified === false)) &&
         data.alumniDetails && (
           <div className="space-y-6 border-t border-gray-200 pt-6">
             {data.alumniDetails.verified === false && (

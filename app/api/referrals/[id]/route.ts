@@ -53,6 +53,15 @@ export async function PUT(
       }
     }
 
+    if (data.isActive !== undefined) {
+      if (typeof data.isActive !== "boolean") {
+        return NextResponse.json(
+          { message: "isActive must be a boolean value" },
+          { status: 400 },
+        );
+      }
+    }
+
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/${id}`,
       data,
